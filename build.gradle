@@ -1,0 +1,51 @@
+buildscript {
+  ext.hilt_core_version = '2.38.1'
+  ext.booster_version = '4.0.0'
+  repositories {
+    google()
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:7.0.3'
+    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30'
+
+    //Hilt 插件
+    classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_core_version"
+
+    // DiDi-Booster
+    classpath "com.didiglobal.booster:booster-gradle-plugin:$booster_version"
+    //cWebp
+    classpath "com.didiglobal.booster:booster-task-compression-cwebp:$booster_version"
+    // 多线程优化
+    classpath "com.didiglobal.booster:booster-transform-thread:$booster_version"
+    // 去除冗余资源
+    classpath "com.didiglobal.booster:booster-task-resource-deredundancy:$booster_version"
+    // ap文件压缩
+    classpath "com.didiglobal.booster:booster-task-compression-processed-res:$booster_version"
+    // 采用 pngquant 对资源进行压缩
+    classpath "com.didiglobal.booster:booster-task-compression-pngquant:$booster_version"
+    // Sp优化
+    classpath "com.didiglobal.booster:booster-transform-shared-preferences:$booster_version"
+    // WebView预加载
+    classpath "com.didiglobal.booster:booster-transform-webview:$booster_version"
+    // 资源内联
+    classpath "com.didiglobal.booster:booster-transform-r-inline:$booster_version"
+    // 修复 finalizer 导致的 TimeoutException
+    classpath "com.didiglobal.booster:booster-transform-finalizer-watchdog-daemon:$booster_version"
+    // 修复 MediaPlayer 崩溃
+    classpath "com.didiglobal.booster:booster-transform-media-player:$booster_version"
+    // 检查覆盖安装导致的 Resources 和 Assets 未加载的 Bug
+    classpath "com.didiglobal.booster:booster-transform-res-check:$booster_version"
+    // 修复 Toast 在 Android 7.1 上的 Bug
+    classpath "com.didiglobal.booster:booster-transform-toast:$booster_version"
+    // 处理系统Crash
+    classpath "com.didiglobal.booster:booster-transform-activity-thread:$booster_version"
+  }
+}
+
+task clean(type: Delete) {
+  delete rootProject.buildDir
+}
+
+apply plugin: 'com.didiglobal.booster' // ③
