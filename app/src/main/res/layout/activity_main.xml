@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp"
-    android:background="@color/window_background"
+    android:background="@color/line_divider"
     android:paddingTop="20dp"
     tools:context=".ui.main.MainActivity">
 
@@ -15,6 +13,8 @@
         android:id="@+id/tv_72"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_marginStart="24dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
@@ -24,6 +24,8 @@
         android:id="@+id/tv_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_marginStart="24dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@id/tv_72"
@@ -33,6 +35,7 @@
         android:layout_width="100dp"
         android:layout_height="0dp"
         android:text="23/4"
+        android:layout_marginEnd="24dp"
         android:gravity="center"
         app:textColor="@color/white"
         app:lineColor="@color/white"
@@ -41,5 +44,133 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/tv_24"
         app:layout_constraintTop_toTopOf="@id/tv_72" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cd_container"
+        android:layout_width="match_parent"
+        android:layout_height="340dp"
+        app:cardElevation="12dp"
+        android:translationZ="4dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:cardCornerRadius="16dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_24">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center_vertical"
+                android:ellipsize="end"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/welcome_desc"
+                android:layout_marginBottom="12dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@color/textColorPrimary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tv_from"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_from"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="「SPica27」"
+                android:lines="1"
+                android:gravity="center_vertical"
+                app:layout_constraintEnd_toStartOf="@id/btn_detail"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/btn_detail"
+                app:layout_constraintTop_toTopOf="@id/btn_detail"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btn_detail"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/black"
+                app:contentPadding="4dp"
+                app:cardElevation="8dp"
+                android:translationZ="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_eye" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:id="@+id/layout_bottom_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_avatar"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cd_container">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_like"
+            app:tint="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="8dp"
+            android:text="999+" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="24dp"
+            android:src="@drawable/ic_like"
+            app:tint="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="8dp"
+            android:text="999+" />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintTop_toTopOf="@id/layout_bottom_bar"
+        app:layout_constraintBottom_toBottomOf="@id/layout_bottom_bar"
+        android:src="@drawable/ic_default_avatar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">App</string>
     <string name="fail_to_get_version_code">Fail To Get Version Code</string>
-    <string name="welcome_desc" >有期是开发者最早接触过的小而美的应用\n开发此应用于致敬曾经的榫卯</string>
+    <string name="welcome_desc">"有期"是开发者高中时期接触过的一款小而美的应用\n开发此作品于致敬曾经的榫卯工作室</string>
 </resources>
