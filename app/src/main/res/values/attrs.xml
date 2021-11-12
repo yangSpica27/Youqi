@@ -17,7 +17,10 @@
 
     <!-- 自定义的textView-->
     <declare-styleable name="SpicaTextView">
-        <attr name="input_anim_distance" format="integer" />
+        <attr name="mouth" format="string" />
+        <attr name="day" format="string" />
+        <attr name="textColor" format="color" />
+        <attr name="lineColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="HorizontalListView">

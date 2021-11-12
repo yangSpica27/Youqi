@@ -19,7 +19,7 @@ import timber.log.Timber;
 
 /**
  * @ClassName HttpLoggingInterceptor
- * @Description TODO
+ * @Description 日志拦截
  * @Author Spica2 7
  * @Date 2021/8/30 16:43
  */

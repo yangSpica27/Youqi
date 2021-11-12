@@ -11,7 +11,6 @@ import androidx.core.view.setMargins
 import com.spica.app.base.BaseLayout
 import com.spica.app.base.BaseLayout.Companion.MATCH_PARENT
 import com.spica.app.base.BaseLayout.Companion.WRAP_CONTENT
-import com.spica.app.tools.AdaptScreenUtils
 
 interface BaseLayoutExtensions {
 

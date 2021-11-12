@@ -1,5 +1,5 @@
 buildscript {
-  ext.hilt_core_version = '2.38.1'
+  ext.hilt_core_version = '2.40'
   ext.booster_version = '4.0.0'
   repositories {
     google()
@@ -8,7 +8,7 @@ buildscript {
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:7.0.3'
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30'
+    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0-RC2'
 
     //Hilt 插件
     classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_core_version"
