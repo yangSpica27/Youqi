@@ -1,4 +1,4 @@
-package com.spica.app.ui.main
+package com.spica.app.ui.login
 
 
 import android.content.Intent
@@ -11,6 +11,7 @@ import com.spica.app.R
 import com.spica.app.base.BindingActivity
 import com.spica.app.databinding.ActivityLoginBinding
 import com.spica.app.tools.keyboard.FluidContentResizer
+import com.spica.app.ui.main.MainActivity
 
 /**
  * 登录页面
