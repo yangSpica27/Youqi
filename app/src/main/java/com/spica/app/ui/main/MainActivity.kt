@@ -1,5 +1,6 @@
 package com.spica.app.ui.main
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import com.spica.app.base.BindingActivity
 import com.spica.app.databinding.ActivityMainBinding
 import com.spica.app.extensions.dp
 import com.spica.app.tools.ViewPagerLayoutManager
+import com.spica.app.ui.setting.SettingActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -65,7 +67,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         viewBinding.rvCard.adapter = sentenceAdapter
 
 
+        viewBinding.ivAvatar.setOnClickListener {
 
+            val intent = Intent(this, SettingActivity::class.java)
+
+            startActivity(intent)
+
+        }
 
 
     }
