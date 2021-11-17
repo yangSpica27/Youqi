@@ -99,34 +99,17 @@ class SpicaTextView : View {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
-        //测量所需空间
+        //测量日期文本所需空间
         textPaint.getTextBounds(day, 0, day.length, dayBound)
-
         //重新测量宽度确定右界位置
         dayBound.right = dayBound.left +
                 textPaint.measureText(day, 0, day.length).toInt()
-
+        //测量月份文本所需空间
         textPaint.getTextBounds(mouth, 0, mouth.length, mouthBound)
-
-
         //绘制月份
-        canvas.drawText(
-            mouth,
-            (0).toFloat(),
-            (0 + mouthBound.height()).toFloat(),
-            textPaint
-        )
-
-
+        canvas.drawText(mouth, 0F, (0 + mouthBound.height()).toFloat(), textPaint)
         //绘制日
-        canvas.drawText(
-            day,
-            (width - dayBound.width()).toFloat(),
-            (height).toFloat(),
-            textPaint
-        )
-
+        canvas.drawText(day, (width - dayBound.width()).toFloat(), (height).toFloat(), textPaint)
         //绘制斜线
         canvas.drawLine(
             width.toFloat(),
@@ -135,6 +118,5 @@ class SpicaTextView : View {
             height.toFloat(),
             linePaint
         )
-
     }
 }

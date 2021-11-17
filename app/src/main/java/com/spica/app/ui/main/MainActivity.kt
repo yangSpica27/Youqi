@@ -5,14 +5,19 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ktx.immersionBar
 import com.gyf.immersionbar.ktx.statusBarHeight
+import com.kongzue.dialogx.dialogs.FullScreenDialog
+import com.kongzue.dialogx.interfaces.OnBindView
+import com.spica.app.R
 import com.spica.app.base.BindingActivity
 import com.spica.app.databinding.ActivityMainBinding
 import com.spica.app.extensions.dp
 import com.spica.app.tools.SpicaColorEvaluator
 import com.spica.app.tools.ViewPagerLayoutManager
+import com.spica.app.tools.keyboard.FluidContentResizer
 import com.spica.app.ui.setting.SettingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -62,24 +67,18 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     )
 
 
+    //颜色估值器
     private val spicaColorEvaluator: SpicaColorEvaluator = SpicaColorEvaluator()
 
+    //颜色变化动画
     private val colorAnim = ValueAnimator.ofFloat(0F, 1F)
 
 
     // 背景
-    private var bg = GradientDrawable(
-        GradientDrawable.Orientation.TOP_BOTTOM,
-        gradientColor[0]
-    )
+    private var bg = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, gradientColor[0])
 
     // 卡片的布局管理
-    private val cardLayoutManager =
-        ViewPagerLayoutManager(
-            this,
-            RecyclerView.HORIZONTAL,
-            true
-        )
+    private val cardLayoutManager = ViewPagerLayoutManager(this, RecyclerView.HORIZONTAL, true)
 
 
     private val sentenceAdapter: SentenceAdapter by lazy {
@@ -88,10 +87,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         }
     }
 
+    //评论信息窗口
+    private val commentDialog by lazy {
+        FullScreenDialog
+            .build(object : OnBindView<FullScreenDialog?>(R.layout.dialog_comment) {
+            override fun onBind(dialog: FullScreenDialog?, v: View?) {
+               FluidContentResizer.listen(this@MainActivity)
+            }
+        }).setHideZoomBackground(true)
+    }
+
     override fun initializer() {
 
         //透明状态栏
-        immersionBar() {
+        immersionBar {
             transparentStatusBar()
             statusBarDarkFont(true)
             transparentNavigationBar()
@@ -105,6 +114,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             viewBinding.root.paddingBottom
         )
 
+
         //设置默认背景
         viewBinding.root.background = bg
 
@@ -115,17 +125,25 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             override fun onInitComplete() = Unit
 
             override fun onPageSelected(position: Int, isBottom: Boolean) {
+
                 viewBinding.tvCalendar.setText(
                     "${Calendar.getInstance().get(Calendar.MONTH) + 1}",
                     "${Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - (position)}"
                 )
+
+                //停止当前动画
                 if (colorAnim.isRunning) {
                     colorAnim.cancel()
                 }
-                val nextColor = gradientColor[position]
-                colorAnim.removeAllUpdateListeners()
-                colorAnim.addUpdateListener {
 
+                //获取下个动画的颜色对象
+                val nextColor = gradientColor[position]
+
+                //清除动画监听
+                colorAnim.removeAllUpdateListeners()
+
+                //更新动画实现
+                colorAnim.addUpdateListener {
                     val colorTop = spicaColorEvaluator.evaluate(it.animatedValue as Float, currentColor[0], nextColor[0])
                     val colorBottom = spicaColorEvaluator.evaluate(it.animatedValue as Float, currentColor[1], nextColor[1])
 
@@ -161,6 +179,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
             startActivity(intent)
 
+        }
+
+        viewBinding.tvComment.setOnClickListener {
+            commentDialog.show(this)
         }
 
 

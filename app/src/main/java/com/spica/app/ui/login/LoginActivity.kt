@@ -20,7 +20,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>() {
 
 
     private val loginDialog by lazy {
-        FullScreenDialog.show(object : OnBindView<FullScreenDialog?>(R.layout.dialog_login) {
+        FullScreenDialog.build(object : OnBindView<FullScreenDialog?>(R.layout.dialog_login) {
             override fun onBind(dialog: FullScreenDialog?, v: View?) {
                 //...
             }

@@ -1,0 +1,53 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:background="@color/white"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@id/icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="14dp"
+        android:src="@drawable/ic_default_avatar"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/category_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/icon"
+        android:layout_alignTop="@id/icon"
+        android:lines="1"
+        android:textColor="@color/textColorPrimaryHint"
+        android:layout_alignBottom="@id/icon"
+        android:text="SPICa27" />
+
+    <TextView
+        android:id="@+id/published_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_alignTop="@id/category_name"
+        android:layout_alignBottom="@id/category_name"
+        android:layout_toEndOf="@id/category_name"
+        android:text="1 小时前" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="18dp"
+        android:textSize="14sp"
+        android:layout_marginEnd="12dp"
+        android:textStyle="bold"
+        android:maxLines="12"
+        android:textColor="@color/textColorPrimary"
+        android:layout_below="@id/category_name"
+        android:layout_alignStart="@id/category_name"
+        android:text="@string/welcome_desc" />
+
+</RelativeLayout>
