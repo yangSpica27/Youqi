@@ -10,6 +10,7 @@ import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.core.view.marginRight
 import com.spica.app.R
 import com.spica.app.extensions.dp
 import com.spica.app.extensions.sp
@@ -99,8 +100,10 @@ class SpicaTextView : View {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
         //测量所需空间
         textPaint.getTextBounds(day, 0, day.length, dayBound)
+
         textPaint.getTextBounds(mouth, 0, mouth.length, mouthBound)
 
         //绘制月份
@@ -114,7 +117,7 @@ class SpicaTextView : View {
         //绘制日
         canvas.drawText(
             day,
-            (width - dayBound.width()).toFloat(),
+            (width - 4 - dayBound.width()).toFloat(),
             (height).toFloat(),
             textPaint
         )
