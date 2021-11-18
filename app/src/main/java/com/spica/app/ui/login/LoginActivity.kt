@@ -12,10 +12,12 @@ import com.spica.app.base.BindingActivity
 import com.spica.app.databinding.ActivityLoginBinding
 import com.spica.app.tools.keyboard.FluidContentResizer
 import com.spica.app.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * 登录页面
  */
+@AndroidEntryPoint
 class LoginActivity : BindingActivity<ActivityLoginBinding>() {
 
 

@@ -41,14 +41,9 @@ class SpicaTextView : View {
     private val linePaint: Paint = Paint()
 
     constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet) : super(context, attrs) {
+    constructor(context: Context?, attrs: AttributeSet) : super(context, attrs)
 
-    }
-
-    constructor(context: Context?, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-
-    }
-
+    constructor(context: Context?, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
         textPaint.color = Color.WHITE
@@ -111,12 +106,7 @@ class SpicaTextView : View {
         //绘制日
         canvas.drawText(day, (width - dayBound.width()).toFloat(), (height).toFloat(), textPaint)
         //绘制斜线
-        canvas.drawLine(
-            width.toFloat(),
-            0F,
-            0F,
-            height.toFloat(),
-            linePaint
+        canvas.drawLine(width.toFloat(), 0F, 0F, height.toFloat(), linePaint
         )
     }
 }

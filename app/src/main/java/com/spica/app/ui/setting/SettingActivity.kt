@@ -5,10 +5,12 @@ import com.gyf.immersionbar.ktx.immersionBar
 import com.spica.app.R
 import com.spica.app.base.BindingActivity
 import com.spica.app.databinding.ActivitySettingBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * 设置页
  */
+@AndroidEntryPoint
 class SettingActivity : BindingActivity<ActivitySettingBinding>() {
 
 

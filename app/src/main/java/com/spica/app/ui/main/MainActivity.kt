@@ -29,7 +29,6 @@ import java.util.*
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>() {
 
-
     private var gradientColor = listOf(
         intArrayOf(
             Color.parseColor("#64B5F6"),
@@ -60,12 +59,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         )
     )
 
-
     private var currentColor = intArrayOf(
         Color.parseColor("#4DB6AC"),
         Color.parseColor("#4FC3F7")
     )
-
 
     //颜色估值器
     private val spicaColorEvaluator: SpicaColorEvaluator = SpicaColorEvaluator()
@@ -73,13 +70,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     //颜色变化动画
     private val colorAnim = ValueAnimator.ofFloat(0F, 1F)
 
-
     // 背景
     private var bg = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, gradientColor[0])
 
     // 卡片的布局管理
     private val cardLayoutManager = ViewPagerLayoutManager(this, RecyclerView.HORIZONTAL, true)
-
 
     private val sentenceAdapter: SentenceAdapter by lazy {
         SentenceAdapter().apply {
@@ -90,11 +85,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     //评论信息窗口
     private val commentDialog by lazy {
         FullScreenDialog
-            .build(object : OnBindView<FullScreenDialog?>(R.layout.dialog_comment) {
-            override fun onBind(dialog: FullScreenDialog?, v: View?) {
-               FluidContentResizer.listen(this@MainActivity)
-            }
-        }).setHideZoomBackground(true)
+            .build(object : OnBindView<FullScreenDialog>(R.layout.dialog_comment) {
+                override fun onBind(dialog: FullScreenDialog, v: View) {
+                    FluidContentResizer.listen(this@MainActivity)
+                }
+
+            }).setHideZoomBackground(true)
     }
 
     override fun initializer() {
@@ -113,7 +109,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             viewBinding.root.paddingRight,
             viewBinding.root.paddingBottom
         )
-
 
         //设置默认背景
         viewBinding.root.background = bg
