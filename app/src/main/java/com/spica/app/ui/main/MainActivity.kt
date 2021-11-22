@@ -68,7 +68,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     private val spicaColorEvaluator: SpicaColorEvaluator = SpicaColorEvaluator()
 
     //颜色变化动画
-    private val colorAnim = ValueAnimator.ofFloat(0F, 1F)
+    private val colorAnim = ValueAnimator.ofFloat(0F, 1F).apply {
+        duration = 500
+
+    }
 
     // 背景
     private var bg = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, gradientColor[0])
@@ -81,6 +84,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             addData(listOf(1, 2, 3, 4, 5, 6, 7))
         }
     }
+
 
     //评论信息窗口
     private val commentDialog by lazy {
@@ -112,6 +116,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
         //设置默认背景
         viewBinding.root.background = bg
+
+
 
         //监听以实现加变色转化动画
         cardLayoutManager.setOnViewPagerListener(object :

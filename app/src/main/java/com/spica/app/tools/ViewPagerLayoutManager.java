@@ -15,6 +15,9 @@ public class ViewPagerLayoutManager extends LinearLayoutManager {
   private RecyclerView mRecyclerView;
   private int mDrift;//位移，用来判断移动方向
 
+  private float mShrinkAmount = 0.15f;
+  private float mShrinkDistance = 0.9f;
+
   public ViewPagerLayoutManager(Context context, int orientation) {
     super(context, orientation, false);
     init();
@@ -59,15 +62,16 @@ public class ViewPagerLayoutManager extends LinearLayoutManager {
                 positionIdle == getItemCount() - 1);
           }
         }
-        if (view != null) { view.animate().scaleX(1F).scaleY(1F).start(); }
+        // if (view != null) {
+        //   view.animate().scaleX(1F).scaleY(1F).start(); }
         break;
       case SCROLL_STATE_DRAGGING:
-        if (view != null) {
-          view.animate()
-              .scaleY(.8F)
-              .scaleX(.8F)
-              .start();
-        }
+        // if (view != null) {
+        //   view.animate()
+        //       .scaleY(.8F)
+        //       .scaleX(.8F)
+        //       .start();
+        // }
         break;
       default:
         break;
@@ -103,7 +107,29 @@ public class ViewPagerLayoutManager extends LinearLayoutManager {
                                   RecyclerView.Recycler recycler,
                                   RecyclerView.State state) {
     this.mDrift = dx;
-    return super.scrollHorizontallyBy(dx, recycler, state);
+
+    int scrolled = super.scrollHorizontallyBy(dx, recycler, state);
+
+    float midpoint = getWidth() / 2f;
+
+    float d0 = 0f;
+    float d1 = mShrinkDistance * midpoint;
+    float s0 = 1f;
+    float s1 = 1f - mShrinkAmount;
+
+    for (int i = 0; i < getChildCount(); i++) {
+      View child = getChildAt(i);
+      if (child == null) continue;
+      float childMidpoint = (getDecoratedRight(child) + getDecoratedLeft(child)) / 2f;
+      float d = Math.min(d1, Math.abs(midpoint - childMidpoint));
+
+      float scale = s0 + (s1 - s0) *
+          (d - d0) / (d1 - d0);
+      child.setScaleX(scale);
+      child.setScaleY(scale);
+    }
+    return scrolled;
+
   }
 
   /**
