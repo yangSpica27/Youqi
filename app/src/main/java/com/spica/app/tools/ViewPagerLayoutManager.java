@@ -15,8 +15,10 @@ public class ViewPagerLayoutManager extends LinearLayoutManager {
   private RecyclerView mRecyclerView;
   private int mDrift;//位移，用来判断移动方向
 
-  private float mShrinkAmount = 0.15f;
-  private float mShrinkDistance = 0.9f;
+  //缩放量
+  private final float mShrinkAmount = 0.15f;
+
+  private final float mShrinkDistance = 0.9f;
 
   public ViewPagerLayoutManager(Context context, int orientation) {
     super(context, orientation, false);
@@ -99,7 +101,7 @@ public class ViewPagerLayoutManager extends LinearLayoutManager {
    *
    * @param dx
    * @param recycler
-   * @param state
+   * @param state`
    * @return
    */
   @Override
@@ -120,7 +122,8 @@ public class ViewPagerLayoutManager extends LinearLayoutManager {
     for (int i = 0; i < getChildCount(); i++) {
       View child = getChildAt(i);
       if (child == null) continue;
-      float childMidpoint = (getDecoratedRight(child) + getDecoratedLeft(child)) / 2f;
+      float childMidpoint = (getDecoratedRight(child) +
+          getDecoratedLeft(child)) / 2f;
       float d = Math.min(d1, Math.abs(midpoint - childMidpoint));
 
       float scale = s0 + (s1 - s0) *
