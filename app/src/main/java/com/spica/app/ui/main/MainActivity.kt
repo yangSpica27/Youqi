@@ -1,6 +1,7 @@
 package com.spica.app.ui.main
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -17,6 +18,8 @@ import com.spica.app.databinding.ActivityMainBinding
 import com.spica.app.extensions.dp
 import com.spica.app.tools.SpicaColorEvaluator
 import com.spica.app.tools.ViewPagerLayoutManager
+import com.spica.app.tools.calendar.DateFormatter
+import com.spica.app.tools.calendar.LunarCalendar
 import com.spica.app.tools.keyboard.FluidContentResizer
 import com.spica.app.ui.setting.SettingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -97,7 +100,21 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             }).setHideZoomBackground(true)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initializer() {
+
+        val lunarCalendar = LunarCalendar()
+        val formatter = DateFormatter(resources)
+
+        viewBinding.tv24.text = "${
+            formatter
+                .getSolarTermName(
+                    lunarCalendar
+                        .getGregorianDate(Calendar.MONTH) * 2
+                )
+        } ${formatter.getMonthName(lunarCalendar)}" +
+                "${formatter.getDayName(lunarCalendar)}"
+
 
         //透明状态栏
         immersionBar {
@@ -116,7 +133,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
         //设置默认背景
         viewBinding.root.background = bg
-
 
 
         //监听以实现加变色转化动画
