@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.EdgeEffect
 import androidx.recyclerview.widget.RecyclerView
 import com.gyf.immersionbar.ktx.immersionBar
 import com.gyf.immersionbar.ktx.statusBarHeight
@@ -22,6 +23,7 @@ import com.spica.app.tools.calendar.DateFormatter
 import com.spica.app.tools.calendar.LunarCalendar
 import com.spica.app.tools.keyboard.FluidContentResizer
 import com.spica.app.ui.setting.SettingActivity
+import com.spica.app.widget.StretchEdgeEffect
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -133,6 +135,24 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
         //设置默认背景
         viewBinding.root.background = bg
+
+        RecyclerView.EdgeEffectFactory()
+
+//        viewBinding.rvCard.edgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
+//            override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
+//                return object : StretchEdgeEffect(view.context, view) {
+//                    override fun another(): StretchEdgeEffect {
+//
+//
+//                    }
+//
+//                    override fun pivotY(): Float {
+//
+//                    }
+//
+//                }
+//            }
+//        }
 
 
         //监听以实现加变色转化动画

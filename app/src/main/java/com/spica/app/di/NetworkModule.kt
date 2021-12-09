@@ -1,13 +1,13 @@
 package com.spica.app.di
 
 import android.content.Context
-import com.franmontiel.persistentcookiejar.ClearableCookieJar
-import com.franmontiel.persistentcookiejar.PersistentCookieJar
-import com.franmontiel.persistentcookiejar.cache.SetCookieCache
-import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import com.spica.app.network.HttpLoggingInterceptor
 import com.spica.app.network.WanAndroidClient
+import com.spica.app.network.cookie.ClearableCookieJar
+import com.spica.app.network.cookie.PersistentCookieJar
+import com.spica.app.network.cookie.SetCookieCache
+import com.spica.app.network.cookie.SharedPrefsCookiePersistor
 import com.spica.app.network.service.ApiService
 import dagger.Module
 import dagger.Provides
@@ -28,6 +28,7 @@ object NetworkModule {
   @Provides
   @Singleton
   fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
+
     val cookieJar: ClearableCookieJar =
       PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
 

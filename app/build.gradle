@@ -132,11 +132,6 @@ dependencies {
   implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
   implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
 
-
-  //cookieJar
-  implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
-
-
   //用于模糊
   implementation 'no.danielzeller.blurbehindlib:blurbehindlib:1.0.0'
 

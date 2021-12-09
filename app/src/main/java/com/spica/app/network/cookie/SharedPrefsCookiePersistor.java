@@ -3,7 +3,6 @@ package com.spica.app.network.cookie;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.franmontiel.persistentcookiejar.persistence.SerializableCookie;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

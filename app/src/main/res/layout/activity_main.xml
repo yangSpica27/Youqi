@@ -112,4 +112,6 @@
         app:layout_constraintBottom_toBottomOf="@id/layout_bottom_bar"
         android:src="@drawable/ic_default_avatar" />
 
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
