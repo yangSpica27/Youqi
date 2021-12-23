@@ -12,7 +12,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,107 +59,49 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
 
-        <LinearLayout
-            android:id="@+id/item_collect"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
+        <com.spica.app.widget.ObliqueLinerLayout
             android:layout_width="match_parent"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:gravity="center_vertical"
-            android:paddingEnd="16dp"
-            android:orientation="horizontal">
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:background="@android:color/transparent">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="wrap_content"
-                app:tint="@color/textColorPrimaryHint"
-                android:src="@drawable/ic_mindmap_list" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="我收藏的句子"
-                android:textColor="@color/textColorPrimaryHint"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp" />
+        </com.spica.app.widget.ObliqueLinerLayout>
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_right" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <com.spica.app.widget.ObliqueLinerLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:gravity="center_vertical"
-            android:paddingEnd="16dp"
-            android:orientation="horizontal">
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:layout_marginTop="-15dp"
+            android:background="@android:color/transparent">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:tint="@color/textColorPrimaryHint"
-                android:src="@drawable/ic_mindmap_list" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#BA68C8" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="我收藏的句子"
-                android:textColor="@color/textColorPrimaryHint"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp" />
+        </com.spica.app.widget.ObliqueLinerLayout>
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_right" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <com.spica.app.widget.ObliqueLinerLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
-            android:gravity="center_vertical"
-            android:paddingEnd="16dp"
-            android:orientation="horizontal">
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="-15dp">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                app:tint="@color/textColorPrimaryHint"
-                android:src="@drawable/ic_mindmap_list" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#64B5F6" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="我收藏的句子"
-                android:textColor="@color/textColorPrimaryHint"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp" />
+        </com.spica.app.widget.ObliqueLinerLayout>
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_right" />
-
-        </LinearLayout>
 
     </LinearLayout>
 
