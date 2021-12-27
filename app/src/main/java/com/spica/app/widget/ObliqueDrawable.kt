@@ -5,15 +5,15 @@ import android.graphics.Canvas
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
-import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.spica.app.extensions.dp
 
 
-class ObliqueLinerLayout : LinearLayout {
+class ObliqueLinerLayout : ConstraintLayout {
 
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     val path = Path()
 
