@@ -5,10 +5,12 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.EdgeEffect
+import android.view.Window
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.gyf.immersionbar.ktx.immersionBar
 import com.gyf.immersionbar.ktx.statusBarHeight
 import com.kongzue.dialogx.dialogs.FullScreenDialog
@@ -17,13 +19,14 @@ import com.spica.app.R
 import com.spica.app.base.BindingActivity
 import com.spica.app.databinding.ActivityMainBinding
 import com.spica.app.extensions.dp
+import com.spica.app.extensions.hide
+import com.spica.app.extensions.show
 import com.spica.app.tools.SpicaColorEvaluator
 import com.spica.app.tools.ViewPagerLayoutManager
 import com.spica.app.tools.calendar.DateFormatter
 import com.spica.app.tools.calendar.LunarCalendar
 import com.spica.app.tools.keyboard.FluidContentResizer
 import com.spica.app.ui.setting.SettingActivity
-import com.spica.app.widget.StretchEdgeEffect
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -85,7 +88,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     private val cardLayoutManager = ViewPagerLayoutManager(this, RecyclerView.HORIZONTAL, true)
 
     private val sentenceAdapter: SentenceAdapter by lazy {
-        SentenceAdapter().apply {
+        SentenceAdapter(this).apply {
             addData(listOf(1, 2, 3, 4, 5, 6, 7))
         }
     }
@@ -100,6 +103,15 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
                 }
 
             }).setHideZoomBackground(true)
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        window.sharedElementsUseOverlay = false
+        super.onCreate(savedInstanceState)
     }
 
     @SuppressLint("SetTextI18n")
@@ -136,25 +148,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         //设置默认背景
         viewBinding.root.background = bg
 
-        RecyclerView.EdgeEffectFactory()
-
-//        viewBinding.rvCard.edgeEffectFactory = object : RecyclerView.EdgeEffectFactory() {
-//            override fun createEdgeEffect(view: RecyclerView, direction: Int): EdgeEffect {
-//                return object : StretchEdgeEffect(view.context, view) {
-//                    override fun another(): StretchEdgeEffect {
-//
-//
-//                    }
-//
-//                    override fun pivotY(): Float {
-//
-//                    }
-//
-//                }
-//            }
-//        }
-
-
         //监听以实现加变色转化动画
         cardLayoutManager.setOnViewPagerListener(object :
             ViewPagerLayoutManager.OnViewPagerListener {
@@ -162,6 +155,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             override fun onInitComplete() = Unit
 
             override fun onPageSelected(position: Int, isBottom: Boolean) {
+
+                if (position == 0) {
+                    // 根据滑动位置显示和隐藏"回到今天"
+                    viewBinding.tvBackToday.hide()
+                } else {
+                    viewBinding.tvBackToday.show()
+                }
 
                 viewBinding.tvCalendar.setText(
                     "${Calendar.getInstance().get(Calendar.MONTH) + 1}",
@@ -218,10 +218,16 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
         }
 
+        // 点击评论
         viewBinding.tvComment.setOnClickListener {
             commentDialog.show(this)
         }
 
+
+        // 点击回到今天
+        viewBinding.tvBackToday.setOnClickListener {
+            viewBinding.rvCard.smoothScrollToPosition(0)
+        }
 
     }
 

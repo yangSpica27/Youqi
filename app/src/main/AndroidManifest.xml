@@ -34,6 +34,7 @@
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="unspecified" >
         </activity>
+        <activity android:name=".ui.detail.DetailActivity" />
 
         <meta-data
             android:name="android.max_aspect"

@@ -10,9 +10,11 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import kotlin.math.log
 
 @Suppress("unused")
 class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.AnimatorListener {
@@ -24,7 +26,7 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
 
     private var isStart = false
 
-    private var duration = 500L
+    private var duration = 1500L
 
     // 起始坐标
 
@@ -35,6 +37,9 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
     // DecorView
     private var rootView: ViewGroup? = null
 
+    //
+    private var fraction = 100F
+
 
     // 动画结束的监听
     private var animationEndListener: () -> Unit = {}
@@ -43,8 +48,14 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    override fun onAnimationUpdate(anim: ValueAnimator) {
 
+    init {
+        rootView =  getActivityFromContext(context).window.decorView as ViewGroup
+    }
+
+    override fun onAnimationUpdate(anim: ValueAnimator) {
+        fraction = anim.animatedValue as Float
+        postInvalidate()
     }
 
 
@@ -72,6 +83,16 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
         throw Exception("Activity not found!")
     }
 
+
+    fun start() {
+        if (!isStart) {
+            Log.e("anim","kaisshi")
+            isStart = true
+            updateBackground()
+            attachToRootView()
+            getAnimator().start()
+        }
+    }
 
     /**
      * 放置到根视图
@@ -126,8 +147,9 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
 
 
     // 获取动画对象
-    private fun getAnimator(): ValueAnimator? {
-        val valueAnimator = ValueAnimator.ofFloat(0f, 100F).setDuration(duration)
+    private fun getAnimator(): ValueAnimator {
+        val valueAnimator = ValueAnimator.ofFloat(0f, 100F)
+            .setDuration(duration)
         valueAnimator.addUpdateListener(this)
         valueAnimator.addListener(this)
         return valueAnimator
@@ -141,6 +163,9 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
+        Log.e("xuanran","-----")
+
         val layer = canvas.saveLayer(
             0F,
             0F,
@@ -149,7 +174,11 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
             null
         )
         canvas.drawRect(
-            0F, 0F, width.toFloat(), 0F, paint
+            0F,
+            0F + (height / 2) * fraction,
+            width.toFloat(),
+            height - (height / 2) * fraction,
+            paint
         )
         canvas.restoreToCount(layer)
 
@@ -160,6 +189,7 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
 
     // 动画结束
     override fun onAnimationEnd(anim: Animator) {
+        isStart = false
         detachFromRootView()
         animationEndListener.invoke()
     }

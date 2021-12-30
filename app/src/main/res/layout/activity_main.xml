@@ -45,6 +45,19 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_24"
         app:layout_constraintTop_toTopOf="@id/tv_72" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_back_today"
+        android:layout_width="wrap_content"
+        android:text="回到今天 >"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_calendar"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_card"
         android:layout_width="match_parent"
