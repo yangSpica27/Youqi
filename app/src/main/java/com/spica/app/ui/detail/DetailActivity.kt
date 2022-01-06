@@ -33,8 +33,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>() {
             duration = 400L
             containerColor = Color.WHITE
             fadeMode = FADE_MODE_THROUGH
-           
         }
+
         window.sharedElementReturnTransition = MaterialContainerTransform().apply {
             addTarget(android.R.id.content)
             duration = 450L

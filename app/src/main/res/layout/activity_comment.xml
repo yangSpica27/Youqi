@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/window_background"
+    android:layout_height="match_parent"
+    tools:context=".ui.comment.CommentActivity">
+
+
+
+    <com.effective.android.panel.view.PanelSwitchLayout
+        android:id="@+id/panel_switch_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:animationSpeed="standard">
+
+        <com.effective.android.panel.view.content.LinearContentContainer
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:edit_view="@id/chat_et">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_weight="1" />
+
+            <com.spica.app.widget.replyview.ReplyControllerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.effective.android.panel.view.content.LinearContentContainer>
+
+        <!-- 面板区域，仅能包含PanelView-->
+        <com.effective.android.panel.view.panel.PanelContainer
+            android:id="@+id/panel_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/window_background">
+
+            <com.effective.android.panel.view.panel.PanelView
+                android:id="@+id/panel_emotion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:panel_layout="@layout/layout_empty"
+                app:panel_trigger="@id/chat_img" />
+
+        </com.effective.android.panel.view.panel.PanelContainer>
+
+    </com.effective.android.panel.view.PanelSwitchLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

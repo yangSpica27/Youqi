@@ -26,6 +26,7 @@ import com.spica.app.tools.ViewPagerLayoutManager
 import com.spica.app.tools.calendar.DateFormatter
 import com.spica.app.tools.calendar.LunarCalendar
 import com.spica.app.tools.keyboard.FluidContentResizer
+import com.spica.app.ui.comment.CommentActivity
 import com.spica.app.ui.setting.SettingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -37,35 +38,37 @@ import java.util.*
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>() {
 
-    private var gradientColor = listOf(
-        intArrayOf(
-            Color.parseColor("#64B5F6"),
-            Color.parseColor("#4FC3F7")
-        ),
-        intArrayOf(
-            Color.parseColor("#81C784"),
-            Color.parseColor("#AED581")
-        ), intArrayOf(
-            Color.parseColor("#FFB74D"),
-            Color.parseColor("#FFD54F")
-        ),
-        intArrayOf(
-            Color.parseColor("#4FC3F7"),
-            Color.parseColor("#4DD0E1")
-        ),
-        intArrayOf(
-            Color.parseColor("#DCE775"),
-            Color.parseColor("#FFF176")
-        ),
-        intArrayOf(
-            Color.parseColor("#7986CB"),
-            Color.parseColor("#64B5F6")
-        ),
-        intArrayOf(
-            Color.parseColor("#4DB6AC"),
-            Color.parseColor("#4FC3F7")
+    private val gradientColor by lazy {
+        listOf(
+            intArrayOf(
+                Color.parseColor("#64B5F6"),
+                Color.parseColor("#4FC3F7")
+            ),
+            intArrayOf(
+                Color.parseColor("#81C784"),
+                Color.parseColor("#AED581")
+            ), intArrayOf(
+                Color.parseColor("#FFB74D"),
+                Color.parseColor("#FFD54F")
+            ),
+            intArrayOf(
+                Color.parseColor("#4FC3F7"),
+                Color.parseColor("#4DD0E1")
+            ),
+            intArrayOf(
+                Color.parseColor("#DCE775"),
+                Color.parseColor("#FFF176")
+            ),
+            intArrayOf(
+                Color.parseColor("#7986CB"),
+                Color.parseColor("#64B5F6")
+            ),
+            intArrayOf(
+                Color.parseColor("#4DB6AC"),
+                Color.parseColor("#4FC3F7")
+            )
         )
-    )
+    }
 
     private var currentColor = intArrayOf(
         Color.parseColor("#4DB6AC"),
@@ -78,14 +81,18 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     //颜色变化动画
     private val colorAnim = ValueAnimator.ofFloat(0F, 1F).apply {
         duration = 500
-
     }
 
     // 背景
-    private var bg = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, gradientColor[0])
+    private var bg =
+        GradientDrawable(
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            gradientColor[0]
+        )
 
     // 卡片的布局管理
-    private val cardLayoutManager = ViewPagerLayoutManager(this, RecyclerView.HORIZONTAL, true)
+    private val cardLayoutManager =
+        ViewPagerLayoutManager(this, RecyclerView.HORIZONTAL, true)
 
     private val sentenceAdapter: SentenceAdapter by lazy {
         SentenceAdapter(this).apply {
@@ -94,20 +101,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     }
 
 
-    //评论信息窗口
-    private val commentDialog by lazy {
-        FullScreenDialog
-            .build(object : OnBindView<FullScreenDialog>(R.layout.dialog_comment) {
-                override fun onBind(dialog: FullScreenDialog, v: View) {
-                    FluidContentResizer.listen(this@MainActivity)
-                }
 
-            }).setHideZoomBackground(true)
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
         window.sharedElementsUseOverlay = false
@@ -118,6 +115,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     override fun initializer() {
 
         val lunarCalendar = LunarCalendar()
+
         val formatter = DateFormatter(resources)
 
         viewBinding.tv24.text = "${
@@ -220,7 +218,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
         // 点击评论
         viewBinding.tvComment.setOnClickListener {
-            commentDialog.show(this)
+            startActivity(Intent(this,CommentActivity::class.java))
         }
 
 

@@ -4,6 +4,7 @@ plugins {
   id 'kotlin-parcelize'
   id 'kotlin-kapt'
   id 'dagger.hilt.android.plugin'
+  id 'io.michaelrocks.paranoid'
 }
 
 android {
@@ -54,7 +55,7 @@ android {
   }
 
   //去除冲突注解
-//  configurations { implementation.exclude group: 'org.jetbrains', module: 'annotations' }
+  configurations { implementation.exclude group: 'org.jetbrains', module: 'annotations' }
 }
 
 dependencies {
@@ -138,8 +139,30 @@ dependencies {
   def dialogx_version = "0.0.43.beta13"
   implementation "com.github.kongzue.DialogX:DialogX:${dialogx_version}"
 
+  def appCenterSdkVersion = '4.3.1'
+  implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+  implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 
+
+  // 富文本
+  implementation "io.noties.markwon:core:${markwonVersion}"
+  implementation "io.noties.markwon:image:${markwonVersion}"
+  implementation "io.noties.markwon:image-glide:${markwonVersion}"
+  implementation "io.noties.markwon:ext-tables:${markwonVersion}"
+  implementation "io.noties.markwon:recycler:${markwonVersion}"
+  implementation "io.noties.markwon:ext-strikethrough:${markwonVersion}"
+  implementation "io.noties.markwon:html:${markwonVersion}"
+  implementation "io.noties.markwon:editor:${markwonVersion}"
+  implementation "io.noties:prism4j:${prism4jVersion}"
+  implementation "io.noties.markwon:syntax-highlight:${markwonVersion}"
+  implementation "io.noties.markwon:ext-tasklist:${markwonVersion}"
+
+  //
+  implementation 'com.github.YummyLau:PanelSwitchHelper:1.4.0'
 }
+
+
+
 
 kapt {
   correctErrorTypes true
