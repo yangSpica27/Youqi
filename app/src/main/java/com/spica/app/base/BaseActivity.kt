@@ -7,6 +7,8 @@ import com.spica.app.tools.AdaptScreenUtils
 
 abstract class BaseActivity : AppCompatActivity() {
 
+
+
   override fun getResources(): Resources {
     val rawResources = super.getResources()
     return if (rawResources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {

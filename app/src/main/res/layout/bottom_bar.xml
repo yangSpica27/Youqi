@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layoutDescription="@xml/bottom_bar_path"
+    android:background="@color/window_background"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/layout_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@color/white"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp">
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@color/purple_200" />
+
+        <View
+            android:id="@+id/ex1"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@color/purple_500" />
+
+        <View
+            android:id="@+id/ex2"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@color/purple_700" />
+
+    </LinearLayout>
+
+
+
+
+
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

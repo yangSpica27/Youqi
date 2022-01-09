@@ -1,6 +1,6 @@
 buildscript {
   ext.hilt_core_version = '2.40'
-  ext.booster_version = '4.0.0'
+  ext.booster_version = '4.3.0'
   ext.markwonVersion = '4.6.2'
   ext.prism4jVersion = '2.0.0'
   repositories {
@@ -11,7 +11,7 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:7.0.3'
     classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10'
-
+    classpath 'io.michaelrocks:paranoid-gradle-plugin:0.3.7'
     //Hilt 插件
     classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_core_version"
 
@@ -43,8 +43,6 @@ buildscript {
     classpath "com.didiglobal.booster:booster-transform-toast:$booster_version"
     // 处理系统Crash
     classpath "com.didiglobal.booster:booster-transform-activity-thread:$booster_version"
-    // 加密明文key
-    classpath 'io.michaelrocks:paranoid-gradle-plugin:0.3.7'
   }
 }
 
@@ -52,4 +50,4 @@ task clean(type: Delete) {
   delete rootProject.buildDir
 }
 
-apply plugin: 'com.didiglobal.booster'
+apply plugin: 'com.didiglobal.booster' // ③
