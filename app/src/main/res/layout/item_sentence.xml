@@ -17,6 +17,7 @@
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:gravity="center_vertical"
@@ -61,6 +62,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_eye"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_eye" />

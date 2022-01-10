@@ -17,8 +17,7 @@
         android:layout_marginStart="24dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-        android:text="水泉动" />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_24"
@@ -61,18 +60,22 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_card"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@id/layout_bottom_bar"
         android:layout_marginTop="80dp"
         android:orientation="horizontal"
+        tools:listitem="@layout/item_sentence"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/tv_24" />
+
 
     <LinearLayout
         android:id="@+id/layout_bottom_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginStart="24dp"
         app:layout_constraintTop_toBottomOf="@id/rv_card"
         app:layout_constraintStart_toStartOf="parent"

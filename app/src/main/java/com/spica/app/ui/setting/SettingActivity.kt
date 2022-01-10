@@ -2,10 +2,8 @@ package com.spica.app.ui.setting
 
 import android.view.LayoutInflater
 import com.gyf.immersionbar.ktx.immersionBar
-import com.spica.app.R
 import com.spica.app.base.BindingActivity
 import com.spica.app.databinding.ActivitySettingBinding
-import com.spica.app.widget.CurtainView
 import dagger.hilt.android.AndroidEntryPoint
 
 /**

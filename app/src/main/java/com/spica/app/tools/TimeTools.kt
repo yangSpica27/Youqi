@@ -73,3 +73,10 @@ fun getCurrentDateTime(format: String): String? {
   return simpleDateFormat(format, Date())
 }
 
+/**
+ * 格式化时间
+ */
+fun String.getDate(format: String = "yyyy-MM-dd"): Date {
+  return SimpleDateFormat(format, Locale.CHINA).parse(this) ?: Date()
+}
+

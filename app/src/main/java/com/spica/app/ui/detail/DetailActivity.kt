@@ -4,12 +4,17 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
+import android.webkit.WebView
 import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialContainerTransform.FADE_MODE_CROSS
 import com.google.android.material.transition.platform.MaterialContainerTransform.FADE_MODE_THROUGH
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.spica.app.base.BindingActivity
 import com.spica.app.databinding.ActivityDetailBinding
+import com.spica.app.tools.WebViewPool
+import com.spica.app.tools.doOnMainThreadIdle
 
 
 /**
@@ -17,9 +22,24 @@ import com.spica.app.databinding.ActivityDetailBinding
  */
 class DetailActivity : BindingActivity<ActivityDetailBinding>() {
 
+    private var url = "https://youqi.taguxdesign.com/api/content/detail/"
+
+    private lateinit var webView: WebView
 
     override fun initializer() {
-
+        url += intent.getIntExtra("cid", 0).toString()
+        doOnMainThreadIdle(
+            {
+                webView = WebViewPool.getInstance().getWebView(this)
+                viewBinding.root.addView(
+                    webView, ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    )
+                )
+                webView.loadUrl(url)
+            }, 500
+        )
 
     }
 
@@ -39,12 +59,20 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>() {
             addTarget(android.R.id.content)
             duration = 450L
             containerColor = Color.WHITE
+            fadeMode = FADE_MODE_CROSS
         }
         super.onCreate(savedInstanceState)
     }
 
     override fun setupViewBinding(inflater: LayoutInflater):
             ActivityDetailBinding = ActivityDetailBinding.inflate(inflater)
+
+
+
+    override fun onDestroy() {
+        WebViewPool.getInstance().removeWebView(viewBinding.root, webView)
+        super.onDestroy()
+    }
 
 
 }

@@ -5,8 +5,10 @@ import android.content.Context
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
+import com.spica.app.tools.WebViewPool
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.*
+import java.util.logging.Handler
 
 
 @HiltAndroidApp
@@ -30,7 +32,7 @@ class App : Application() {
                 Analytics::class.java, Crashes::class.java
             )
         }
-
+        WebViewPool.init(this)
         application = this
     }
 }

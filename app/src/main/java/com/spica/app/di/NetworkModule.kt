@@ -3,7 +3,7 @@ package com.spica.app.di
 import android.content.Context
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
 import com.spica.app.network.HttpLoggingInterceptor
-import com.spica.app.network.WanAndroidClient
+import com.spica.app.network.AppClient
 import com.spica.app.network.cookie.ClearableCookieJar
 import com.spica.app.network.cookie.PersistentCookieJar
 import com.spica.app.network.cookie.SetCookieCache
@@ -43,7 +43,7 @@ object NetworkModule {
   fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
       .client(okHttpClient)
-      .baseUrl("https://www.wanandroid.com/")
+      .baseUrl("https://youqi.taguxdesign.com/api/")
       .addConverterFactory(MoshiConverterFactory.create())
       .addCallAdapterFactory(CoroutinesResponseCallAdapterFactory.create())
       .build()
@@ -57,8 +57,8 @@ object NetworkModule {
 
   @Provides
   @Singleton
-  fun provideApiClient(apiService: ApiService): WanAndroidClient {
-    return WanAndroidClient(apiService)
+  fun provideApiClient(apiService: ApiService): AppClient {
+    return AppClient(apiService)
   }
 
 

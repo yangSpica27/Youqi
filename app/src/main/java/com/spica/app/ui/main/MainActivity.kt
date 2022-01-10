@@ -9,26 +9,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.gyf.immersionbar.ktx.immersionBar
 import com.gyf.immersionbar.ktx.statusBarHeight
-import com.kongzue.dialogx.dialogs.FullScreenDialog
-import com.kongzue.dialogx.interfaces.OnBindView
-import com.spica.app.R
 import com.spica.app.base.BindingActivity
 import com.spica.app.databinding.ActivityMainBinding
 import com.spica.app.extensions.dp
 import com.spica.app.extensions.hide
 import com.spica.app.extensions.show
+import com.spica.app.model.YData
 import com.spica.app.tools.SpicaColorEvaluator
 import com.spica.app.tools.ViewPagerLayoutManager
 import com.spica.app.tools.calendar.DateFormatter
 import com.spica.app.tools.calendar.LunarCalendar
-import com.spica.app.tools.keyboard.FluidContentResizer
+import com.spica.app.tools.doOnMainThreadIdle
+import com.spica.app.tools.getDate
 import com.spica.app.ui.comment.CommentActivity
 import com.spica.app.ui.setting.SettingActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -37,6 +43,9 @@ import java.util.*
  */
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>() {
+
+
+    private val viewModel by viewModels<MainViewModel>()
 
     private val gradientColor by lazy {
         listOf(
@@ -70,6 +79,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         )
     }
 
+    private val items: MutableList<YData> = mutableListOf()
+
     private var currentColor = intArrayOf(
         Color.parseColor("#4DB6AC"),
         Color.parseColor("#4FC3F7")
@@ -95,13 +106,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         ViewPagerLayoutManager(this, RecyclerView.HORIZONTAL, true)
 
     private val sentenceAdapter: SentenceAdapter by lazy {
-        SentenceAdapter(this).apply {
-            addData(listOf(1, 2, 3, 4, 5, 6, 7))
-        }
+        SentenceAdapter(this)
     }
-
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,6 +119,54 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
     @SuppressLint("SetTextI18n")
     override fun initializer() {
+
+        lifecycleScope.launch(Dispatchers.Main) {
+
+            viewModel.errorMessage.collectLatest {
+                // 错误信息
+                withContext(Dispatchers.Main) {
+                    it?.let {
+                        if (it.isNotEmpty())
+                            Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.isLoading.collectLatest {
+                // 是否正在加载
+                withContext(Dispatchers.Main) {
+                    if (it) {
+                        viewBinding.rvCard.visibility = View.INVISIBLE
+                    } else {
+                        viewBinding.rvCard.show()
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.dateList.collectLatest {
+                it?.let {
+                    items.clear()
+                    items.addAll(it.data)
+                    sentenceAdapter.setNewInstance(items)
+                    initHeader()
+                    // cpu空闲时候再执行
+                    doOnMainThreadIdle(
+                        {
+                            initRecyclerview()
+                        }
+                    )
+                }
+            }
+        }
+
+
+        lifecycleScope.launch {
+            viewModel.dateList()
+        }
 
         val lunarCalendar = LunarCalendar()
 
@@ -146,11 +200,47 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         //设置默认背景
         viewBinding.root.background = bg
 
+        //点击头像
+        viewBinding.ivAvatar.setOnClickListener {
+
+            val intent = Intent(this, SettingActivity::class.java)
+
+            startActivity(intent)
+
+        }
+
+        // 点击评论
+        viewBinding.tvComment.setOnClickListener {
+            startActivity(Intent(this, CommentActivity::class.java))
+        }
+
+
+        // 点击回到今天
+        viewBinding.tvBackToday.setOnClickListener {
+            viewBinding.rvCard.smoothScrollToPosition(0)
+        }
+
+    }
+
+    private suspend fun initHeader() = withContext(Dispatchers.Main) {
+        val currentDate = items[0].date.getDate()
+        viewBinding.tv72.text = items[0].wuhou
+        viewBinding.tv24.text = items[0].lunar
+        viewBinding.tvCalendar.setText(
+            mouth = (currentDate.month + 1).toString(),
+            day = currentDate.day.toString()
+        )
+    }
+
+
+    private fun initRecyclerview() {
         //监听以实现加变色转化动画
         cardLayoutManager.setOnViewPagerListener(object :
             ViewPagerLayoutManager.OnViewPagerListener {
 
-            override fun onInitComplete() = Unit
+            override fun onInitComplete() {
+
+            }
 
             override fun onPageSelected(position: Int, isBottom: Boolean) {
 
@@ -161,10 +251,14 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
                     viewBinding.tvBackToday.show()
                 }
 
+                val currentDate = items[position].date.getDate()
+                viewBinding.tv72.text = items[position].wuhou
+                viewBinding.tv24.text = items[position].lunar
                 viewBinding.tvCalendar.setText(
-                    "${Calendar.getInstance().get(Calendar.MONTH) + 1}",
-                    "${Calendar.getInstance().get(Calendar.DAY_OF_MONTH) - (position)}"
+                    mouth = (currentDate.month + 1).toString(),
+                    day = currentDate.date.toString()
                 )
+
 
                 //停止当前动画
                 if (colorAnim.isRunning) {
@@ -206,27 +300,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
         //卡片的适配器
         viewBinding.rvCard.adapter = sentenceAdapter
-
-        //点击头像
-        viewBinding.ivAvatar.setOnClickListener {
-
-            val intent = Intent(this, SettingActivity::class.java)
-
-            startActivity(intent)
-
-        }
-
-        // 点击评论
-        viewBinding.tvComment.setOnClickListener {
-            startActivity(Intent(this,CommentActivity::class.java))
-        }
-
-
-        // 点击回到今天
-        viewBinding.tvBackToday.setOnClickListener {
-            viewBinding.rvCard.smoothScrollToPosition(0)
-        }
-
     }
 
     override fun setupViewBinding(inflater: LayoutInflater):
