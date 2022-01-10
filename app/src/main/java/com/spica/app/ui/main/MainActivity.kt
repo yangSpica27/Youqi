@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.gyf.immersionbar.ktx.immersionBar
 import com.gyf.immersionbar.ktx.statusBarHeight
@@ -138,8 +139,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
                 // 是否正在加载
                 withContext(Dispatchers.Main) {
                     if (it) {
+                        viewBinding.pbLoading.show()
                         viewBinding.rvCard.visibility = View.INVISIBLE
                     } else {
+                        viewBinding.pbLoading.hide()
                         viewBinding.rvCard.show()
                     }
                 }
@@ -228,19 +231,18 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         viewBinding.tv24.text = items[0].lunar
         viewBinding.tvCalendar.setText(
             mouth = (currentDate.month + 1).toString(),
-            day = currentDate.day.toString()
+            day = currentDate.date.toString()
         )
     }
 
 
     private fun initRecyclerview() {
         //监听以实现加变色转化动画
+        sentenceAdapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
         cardLayoutManager.setOnViewPagerListener(object :
             ViewPagerLayoutManager.OnViewPagerListener {
 
-            override fun onInitComplete() {
-
-            }
+            override fun onInitComplete() =Unit
 
             override fun onPageSelected(position: Int, isBottom: Boolean) {
 
@@ -297,6 +299,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         //布局管理器
         viewBinding.rvCard.layoutManager =
             cardLayoutManager
+
 
         //卡片的适配器
         viewBinding.rvCard.adapter = sentenceAdapter

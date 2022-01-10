@@ -7,7 +7,6 @@ import androidx.startup.Initializer
 import coil.Coil
 import coil.ImageLoader
 import coil.request.CachePolicy
-import com.spica.app.extensions.dp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,8 +21,8 @@ class CoilInitializer : Initializer<Unit> {
       val imageLoader = ImageLoader.Builder(context)
         .crossfade(true)
         .allowRgb565(true)
-        .memoryCachePolicy(CachePolicy.DISABLED)
-        .diskCachePolicy(CachePolicy.DISABLED)
+        .memoryCachePolicy(CachePolicy.ENABLED)
+        .diskCachePolicy(CachePolicy.ENABLED)
         .allowHardware(true)
         .bitmapPoolingEnabled(false)
         .build()

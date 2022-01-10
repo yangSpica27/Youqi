@@ -30,7 +30,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>() {
         url += intent.getIntExtra("cid", 0).toString()
         doOnMainThreadIdle(
             {
-                webView = WebViewPool.getInstance().getWebView(this)
+                webView = WebViewPool.instance.getWebView(this)
                 viewBinding.root.addView(
                     webView, ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
@@ -43,6 +43,10 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>() {
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        WebViewPool.instance.removeWebView(viewBinding.root, webView)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
@@ -69,10 +73,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>() {
 
 
 
-    override fun onDestroy() {
-        WebViewPool.getInstance().removeWebView(viewBinding.root, webView)
-        super.onDestroy()
-    }
+
 
 
 }
