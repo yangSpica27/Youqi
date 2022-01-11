@@ -30,10 +30,23 @@ android {
 
   }
 
+  signingConfigs {
+    signingConfig {
+      storeFile rootProject.file("key.jks")
+      storePassword 'SPICa27'
+      keyAlias 'wuqi'
+      keyPassword 'SPICa27'
+    }
+  }
+
   buildTypes {
     release {
+      signingConfig signingConfigs.signingConfig
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+    debug{
+      signingConfig signingConfigs.signingConfig
     }
   }
   compileOptions {

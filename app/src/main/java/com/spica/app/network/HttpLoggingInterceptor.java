@@ -2,6 +2,8 @@ package com.spica.app.network;
 
 import com.google.android.gms.common.util.IOUtils;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Connection;
@@ -145,7 +147,9 @@ public class HttpLoggingInterceptor implements Interceptor {
             byte[] bytes = IOUtils.toByteArray(responseBody.byteStream());
             MediaType contentType = responseBody.contentType();
             String body = new String(bytes, getCharset(contentType));
-            log("\tbody:" + body);
+
+            log("\tbody:" + decode(body));
+
             responseBody = ResponseBody.create(responseBody.contentType(), bytes);
             return response.newBuilder().body(responseBody).build();
           } else {
@@ -165,6 +169,30 @@ public class HttpLoggingInterceptor implements Interceptor {
     Charset charset = contentType != null ? contentType.charset(UTF8) : UTF8;
     if (charset == null) charset = UTF8;
     return charset;
+  }
+
+  public static String decode(String unicodeStr) {
+    if (unicodeStr == null) {
+      return null;
+    }
+    StringBuffer retBuf = new StringBuffer();
+    int maxLoop = unicodeStr.length();
+    for (int i = 0; i < maxLoop; i++) {
+      if (unicodeStr.charAt(i) == '\\') {
+        if ((i < maxLoop - 5) && ((unicodeStr.charAt(i + 1) == 'u') || (unicodeStr.charAt(i + 1) == 'U')))
+          try {
+            retBuf.append((char) Integer.parseInt(unicodeStr.substring(i + 2, i + 6), 16));
+            i += 5;
+          } catch (NumberFormatException localNumberFormatException) {
+            retBuf.append(unicodeStr.charAt(i));
+          }
+        else
+          retBuf.append(unicodeStr.charAt(i));
+      } else {
+        retBuf.append(unicodeStr.charAt(i));
+      }
+    }
+    return retBuf.toString();
   }
 
   /**

@@ -16,6 +16,7 @@
         app:title="用户评论"
         app:titleCentered="true" />
 
+
     <com.effective.android.panel.view.PanelSwitchLayout
         android:id="@+id/panel_switch_layout"
         android:layout_width="match_parent"
@@ -64,5 +65,12 @@
         </com.effective.android.panel.view.panel.PanelContainer>
 
     </com.effective.android.panel.view.PanelSwitchLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/line_divider"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:ignore="PxUsage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
