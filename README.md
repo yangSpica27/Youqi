@@ -2,15 +2,15 @@
 
 Api来源与有期
 
-![preview](/img/Screenshot_1.jpg)
+## Screenshots
+<p align="center">
+<img src="/img/Screenshot_1.jpg" width="32%"/>
+<img src="/img/Screenshot_2.jpg" width="32%"/>
+<img src="/img/Screenshot_3.jpg" width="32%"/>
+</p>
 
-![preview](/img/Screenshot_2.jpg)
-
-![preview](/img/Screenshot_3.jpg)
-
-![preview](/img/Screenshot_4.jpg)
-
-![preview](/img/Screenshot_5.jpg)
-
-
+<p align="center">
+<img src="/img/Screenshot_4.jpg" width="32%"/>
+<img src="/img/Screenshot_5.jpg" width="32%"/>
+</p>
 
