@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/line_divider"
-    android:paddingTop="20dp"
     tools:context=".ui.main.MainActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -15,6 +14,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4" />
@@ -47,7 +47,7 @@
         android:id="@+id/tv_back_today"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="回到今天 >"
+        android:text="@string/back_today"
         android:layout_marginTop="12dp"
         android:visibility="gone"
         android:layout_marginEnd="24dp"
@@ -107,8 +107,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/white"
-            android:layout_marginStart="8dp"
-            android:text="999+" />
+            android:layout_marginStart="8dp" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="24dp"
@@ -119,12 +118,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_comment"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/white"
-            android:layout_marginStart="8dp"
-            android:text="999+" />
+            android:layout_marginStart="8dp" />
 
     </LinearLayout>
 
@@ -138,5 +136,15 @@
         app:layout_constraintTop_toTopOf="@id/layout_bottom_bar"
         app:layout_constraintBottom_toBottomOf="@id/layout_bottom_bar"
         android:src="@drawable/ic_default_avatar" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_pic"
+        android:layout_width="match_parent"
+        android:scaleType="fitCenter"
+        android:clickable="true"
+        android:visibility="gone"
+        android:background="@color/white"
+        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

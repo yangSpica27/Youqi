@@ -10,6 +10,7 @@
     <string name="calendar_thursday">星期四</string>
     <string name="calendar_firday">星期五</string>
     <string name="calendar_saturday">星期六</string>
+    <string name="back_today"><![CDATA[回到今天 >]]></string>
 
     <string-array name="gregorianFestivals">
         <item>元旦</item>

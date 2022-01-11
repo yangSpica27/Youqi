@@ -11,6 +11,8 @@ import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.updateMargins
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -22,13 +24,10 @@ import com.spica.app.databinding.ActivityMainBinding
 import com.spica.app.extensions.dp
 import com.spica.app.extensions.hide
 import com.spica.app.extensions.show
-import com.spica.app.model.YData
-import com.spica.app.tools.SpicaColorEvaluator
-import com.spica.app.tools.ViewPagerLayoutManager
+import com.spica.app.model.date.YData
+import com.spica.app.tools.*
 import com.spica.app.tools.calendar.DateFormatter
 import com.spica.app.tools.calendar.LunarCalendar
-import com.spica.app.tools.doOnMainThreadIdle
-import com.spica.app.tools.getDate
 import com.spica.app.ui.comment.CommentActivity
 import com.spica.app.ui.setting.SettingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,38 +47,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
     private val viewModel by viewModels<MainViewModel>()
 
-    private val gradientColor by lazy {
-        listOf(
-            intArrayOf(
-                Color.parseColor("#64B5F6"),
-                Color.parseColor("#4FC3F7")
-            ),
-            intArrayOf(
-                Color.parseColor("#81C784"),
-                Color.parseColor("#AED581")
-            ), intArrayOf(
-                Color.parseColor("#FFB74D"),
-                Color.parseColor("#FFD54F")
-            ),
-            intArrayOf(
-                Color.parseColor("#4FC3F7"),
-                Color.parseColor("#4DD0E1")
-            ),
-            intArrayOf(
-                Color.parseColor("#DCE775"),
-                Color.parseColor("#FFF176")
-            ),
-            intArrayOf(
-                Color.parseColor("#7986CB"),
-                Color.parseColor("#64B5F6")
-            ),
-            intArrayOf(
-                Color.parseColor("#4DB6AC"),
-                Color.parseColor("#4FC3F7")
-            )
-        )
-    }
-
     private val items: MutableList<YData> = mutableListOf()
 
     private var currentColor = intArrayOf(
@@ -87,13 +54,16 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         Color.parseColor("#4FC3F7")
     )
 
+    private var currentPosition = 0
+
     //颜色估值器
     private val spicaColorEvaluator: SpicaColorEvaluator = SpicaColorEvaluator()
 
     //颜色变化动画
-    private val colorAnim = ValueAnimator.ofFloat(0F, 1F).apply {
-        duration = 500
-    }
+    private val colorAnim = ValueAnimator.ofFloat(0F, 1F)
+        .apply {
+            duration = 500L
+        }
 
     // 背景
     private var bg =
@@ -128,7 +98,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
                 withContext(Dispatchers.Main) {
                     it?.let {
                         if (it.isNotEmpty())
-                            Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@MainActivity, it,
+                                Toast.LENGTH_SHORT
+                            ).show()
                     }
                 }
             }
@@ -155,7 +128,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
                     items.clear()
                     items.addAll(it.data)
                     sentenceAdapter.setNewInstance(items)
-                    initHeader()
+                    initHeaderAndBottomBar()
                     // cpu空闲时候再执行
                     doOnMainThreadIdle(
                         {
@@ -169,6 +142,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
         lifecycleScope.launch {
             viewModel.dateList()
+        }
+
+
+        viewBinding.tv72.setOnClickListener {
+
         }
 
         val lunarCalendar = LunarCalendar()
@@ -193,13 +171,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         }
 
         //布局整体下沉
-        viewBinding.root.setPadding(
-            viewBinding.root.paddingLeft,
-            statusBarHeight + 24.dp,
-            viewBinding.root.paddingRight,
-            viewBinding.root.paddingBottom
+        val lp = viewBinding.tv72.layoutParams as ConstraintLayout.LayoutParams
+        lp.updateMargins(
+            top = lp.topMargin + statusBarHeight
         )
-
+        viewBinding.tv72.layoutParams = lp
         //设置默认背景
         viewBinding.root.background = bg
 
@@ -213,8 +189,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         }
 
         // 点击评论
+        viewBinding.tvComment.expand(5.dp, 5.dp)
         viewBinding.tvComment.setOnClickListener {
-            startActivity(Intent(this, CommentActivity::class.java))
+            startActivity(
+                Intent(this, CommentActivity::class.java)
+                    .apply {
+                        putExtra("cid", items[currentPosition].content.id)
+                    })
         }
 
 
@@ -225,14 +206,27 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
     }
 
-    private suspend fun initHeader() = withContext(Dispatchers.Main) {
-        val currentDate = items[0].date.getDate()
-        viewBinding.tv72.text = items[0].wuhou
-        viewBinding.tv24.text = items[0].lunar
+    @Suppress("deprecation")
+    private suspend fun initHeaderAndBottomBar() = withContext(Dispatchers.Main) {
+        val currentDate = items[currentPosition].date.getDate()
+        viewBinding.tv72.text = items[currentPosition].wuhou
+        viewBinding.tv24.text = items[currentPosition].lunar
         viewBinding.tvCalendar.setText(
             mouth = (currentDate.month + 1).toString(),
             day = currentDate.date.toString()
         )
+        viewBinding.tvLike.text = items[currentPosition].content.likeCount.toString()
+
+        viewBinding.tvComment.text = items[currentPosition].content.commentCount.toString()
+    }
+
+
+    override fun onBackPressed() {
+        if (viewBinding.ivPic.visibility == View.VISIBLE) {
+            viewBinding.ivPic.hide()
+            return
+        }
+        super.onBackPressed()
     }
 
 
@@ -242,9 +236,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         cardLayoutManager.setOnViewPagerListener(object :
             ViewPagerLayoutManager.OnViewPagerListener {
 
-            override fun onInitComplete() =Unit
+            override fun onInitComplete() = Unit
 
             override fun onPageSelected(position: Int, isBottom: Boolean) {
+                currentPosition = position
 
                 if (position == 0) {
                     // 根据滑动位置显示和隐藏"回到今天"
@@ -253,14 +248,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
                     viewBinding.tvBackToday.show()
                 }
 
-                val currentDate = items[position].date.getDate()
-                viewBinding.tv72.text = items[position].wuhou
-                viewBinding.tv24.text = items[position].lunar
-                viewBinding.tvCalendar.setText(
-                    mouth = (currentDate.month + 1).toString(),
-                    day = currentDate.date.toString()
-                )
-
+                lifecycleScope.launch {
+                    initHeaderAndBottomBar()
+                }
 
                 //停止当前动画
                 if (colorAnim.isRunning) {

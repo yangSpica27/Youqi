@@ -1,4 +1,4 @@
-package com.spica.app.tools
+package com.spica.app.tools.widget
 
 import android.R
 import android.content.Context
@@ -155,7 +155,6 @@ class WebViewPool {
             webSettings.setAppCacheEnabled(true) //开启 Application Caches 功能
             val cacheDirPath = context.filesDir.absolutePath + APP_CACAHE_DIRNAME
             webSettings.setAppCachePath(cacheDirPath) //设置  Application Caches 缓存目录
-
             //页面白屏问题
             webView.overScrollMode = View.OVER_SCROLL_NEVER
 //            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null)

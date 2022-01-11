@@ -2,8 +2,8 @@ package com.spica.app.di
 
 import android.content.Context
 import com.skydoves.sandwich.coroutines.CoroutinesResponseCallAdapterFactory
-import com.spica.app.network.HttpLoggingInterceptor
 import com.spica.app.network.AppClient
+import com.spica.app.network.HttpLoggingInterceptor
 import com.spica.app.network.cookie.ClearableCookieJar
 import com.spica.app.network.cookie.PersistentCookieJar
 import com.spica.app.network.cookie.SetCookieCache

@@ -11,8 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
+        android:paddingBottom="20dp"
         android:background="@color/window_background"
         android:layout_gravity="bottom">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/line_divider"
+            tools:ignore="PxUsage" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/edit_ll"

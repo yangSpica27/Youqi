@@ -2,7 +2,7 @@ package com.spica.app.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.spica.app.model.YDateList
+import com.spica.app.model.date.YDateList
 import com.spica.app.repository.YRepostory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

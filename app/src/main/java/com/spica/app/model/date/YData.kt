@@ -1,4 +1,4 @@
-package com.spica.app.model
+package com.spica.app.model.date
 
 
 import com.chad.library.adapter.base.entity.MultiItemEntity

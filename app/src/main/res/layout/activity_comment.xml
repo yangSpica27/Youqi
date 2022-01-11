@@ -8,12 +8,20 @@
     android:layout_height="match_parent"
     tools:context=".ui.comment.CommentActivity">
 
-
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="用户评论"
+        app:titleCentered="true" />
 
     <com.effective.android.panel.view.PanelSwitchLayout
         android:id="@+id/panel_switch_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="vertical"
         app:animationSpeed="standard">
 

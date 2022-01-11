@@ -1,36 +1,46 @@
 package com.spica.app.ui.comment
 
-import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.activity.viewModels
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
-import androidx.core.view.updatePadding
+import androidx.lifecycle.lifecycleScope
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.effective.android.panel.PanelSwitchHelper
-import com.fondesa.recyclerviewdivider.Divider
-import com.fondesa.recyclerviewdivider.Grid
 import com.fondesa.recyclerviewdivider.dividerBuilder
-import com.fondesa.recyclerviewdivider.visibility.VisibilityProvider
-import com.google.android.material.appbar.MaterialToolbar
-import com.gyf.immersionbar.ImmersionBar
 import com.gyf.immersionbar.ktx.immersionBar
+import com.gyf.immersionbar.ktx.statusBarHeight
 import com.spica.app.R
 import com.spica.app.base.BindingActivity
 import com.spica.app.databinding.ActivityCommentBinding
-import com.spica.app.extensions.dp
+import com.spica.app.tools.doOnMainThreadIdle
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 
-
+@AndroidEntryPoint
 class CommentActivity : BindingActivity<ActivityCommentBinding>() {
 
     private val commentAdapter by lazy {
         CommentAdapter()
     }
 
+
+    private var commentId: Int = 0
+
+    private val viewModel by viewModels<CommentViewModel>()
+
     // 软键盘协助工具类
     private lateinit var mHelper: PanelSwitchHelper
 
     override fun initializer() {
+
+        commentId = intent.getIntExtra("cid", 0)
+
         //透明状态栏
         immersionBar {
             transparentStatusBar()
@@ -38,48 +48,57 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
             transparentNavigationBar()
         }
 
+        viewBinding.toolbar.apply {
+            updateLayoutParams<ConstraintLayout.LayoutParams> {
+                updateMargins(top = marginTop + statusBarHeight)
+            }
+        }
+
+
         mHelper = PanelSwitchHelper.Builder(this)
             .addContentScrollMeasurer {
                 getScrollDistance { defaultDistance -> defaultDistance }
                 getScrollViewId { R.id.recycler_view }
             }
             .contentScrollOutsideEnable(true)
-            .build(true)
-        val data = arrayListOf<Any>()
+            .build(false)
 
-        for (index in 1..100) {
-            data.add(index)
-        }
-        commentAdapter.addData(data)
-        // 头部
-        commentAdapter.addHeaderView(MaterialToolbar(this).apply {
-            isTitleCentered = true
-            title = "用户评论"
-            layoutParams = LinearLayout
-                .LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                ).apply {
-                    updateMargins(top = ImmersionBar.getStatusBarHeight(this@CommentActivity))
-                }
 
+        doOnMainThreadIdle({
+            initRecyclerView()
         })
-        commentAdapter.addFooterView(
-            TextView(this).apply {
-                gravity = Gravity.CENTER
-                textSize = 14F
-                text = "- 已经到底了- "
-                updatePadding(top = 12.dp, bottom = 12.dp)
-            }
-        )
-        commentAdapter.setEmptyView(R.layout.layout_comment_empty)
-        dividerBuilder()
-            .colorRes(R.color.line_divider)
-            .size(2)
-            .build()
-            .addTo(viewBinding.recyclerView)
 
-        viewBinding.recyclerView.adapter = commentAdapter
+
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.commentList.collectLatest {
+                if (it.isEmpty()) {
+                    commentAdapter.loadMoreModule.loadMoreEnd()
+                    return@collectLatest
+                }
+                commentAdapter.addData(it)
+                commentAdapter.loadMoreModule.loadMoreComplete()
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.errorMessage.collectLatest {
+                commentAdapter.loadMoreModule.loadMoreFail()
+            }
+        }
+
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewModel.isLoading.collectLatest {
+
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.commentId = commentId
+            viewModel.loadMoreComment(true)
+        }
+
     }
 
 
@@ -92,7 +111,31 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
     }
 
 
+    private fun initRecyclerView() {
+        commentAdapter.setEmptyView(R.layout.layout_comment_empty)
+        commentAdapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.AlphaIn)
+
+        dividerBuilder()
+            .colorRes(R.color.line_divider)
+            .size(2)
+            .build()
+            .addTo(viewBinding.recyclerView)
+
+        OverScrollDecoratorHelper.setUpOverScroll(
+            viewBinding.recyclerView,
+            OverScrollDecoratorHelper.ORIENTATION_VERTICAL
+        )
+
+        commentAdapter.setDiffCallback(DiffCommentCallBack())
+        viewBinding.recyclerView.adapter = commentAdapter
+        commentAdapter.loadMoreModule.setOnLoadMoreListener {
+            viewModel.loadMoreComment(false)
+        }
+    }
+
+
     override fun setupViewBinding(inflater: LayoutInflater):
             ActivityCommentBinding = ActivityCommentBinding.inflate(inflater)
+
 
 }

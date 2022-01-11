@@ -30,7 +30,7 @@ fun getTimeString(dt: Date, pattern: String): String {
  * @param strDay
  */
 fun timeFormatStr(calendar: Calendar, strDay: String): String? {
-  var tempStr: String
+  val tempStr: String
   val hour = calendar[Calendar.HOUR_OF_DAY]
   tempStr = if (hour > 11) {
     "下午 $strDay"
@@ -60,7 +60,7 @@ fun simpleDateFormat(format: String, date: Date): String? {
   if (TextUtils.isEmpty(format)) {
     format = "yyyy-MM-dd HH:mm:ss SSS"
   }
-  return SimpleDateFormat(format).format(date)
+  return SimpleDateFormat(format, Locale.CHINA).format(date)
 }
 
 /**

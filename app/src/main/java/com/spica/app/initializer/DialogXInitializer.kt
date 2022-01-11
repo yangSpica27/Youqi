@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package com.spica.app.initializer
 
 import android.content.Context

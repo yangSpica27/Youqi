@@ -13,7 +13,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.spica.app.base.BindingActivity
 import com.spica.app.databinding.ActivityDetailBinding
-import com.spica.app.tools.WebViewPool
+import com.spica.app.tools.widget.WebViewPool
 import com.spica.app.tools.doOnMainThreadIdle
 
 

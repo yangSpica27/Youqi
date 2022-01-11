@@ -5,10 +5,9 @@ import android.content.Context
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
-import com.spica.app.tools.WebViewPool
+import com.spica.app.tools.widget.WebViewPool
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.*
-import java.util.logging.Handler
 
 
 @HiltAndroidApp

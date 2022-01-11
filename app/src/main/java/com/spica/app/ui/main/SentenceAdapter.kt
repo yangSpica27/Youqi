@@ -12,7 +12,7 @@ import com.spica.app.databinding.ItemDateNormalBinding
 import com.spica.app.databinding.ItemDatePicBinding
 import com.spica.app.extensions.hide
 import com.spica.app.extensions.show
-import com.spica.app.model.*
+import com.spica.app.model.date.*
 import com.spica.app.tools.doOnMainThreadIdle
 import com.spica.app.ui.detail.DetailActivity
 
@@ -32,7 +32,7 @@ class SentenceAdapter(val activity: Activity) :
 
         when(holder.itemViewType){
 
-            NORMAL->{
+            NORMAL ->{
                 val itemBinding = ItemDateNormalBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
                 itemBinding.tvFrom.text = item.content.personSim
@@ -54,7 +54,7 @@ class SentenceAdapter(val activity: Activity) :
                 }
             }
 
-            AUDIO->{
+            AUDIO ->{
                 val itemBinding = ItemDateNormalBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
                 itemBinding.tvFrom.text = item.content.personSim
@@ -85,7 +85,7 @@ class SentenceAdapter(val activity: Activity) :
 
             }
 
-            ARTICLE->{
+            ARTICLE ->{
                 val itemBinding = ItemDateArticleBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
                 itemBinding.tvFrom.text = item.content.personSim

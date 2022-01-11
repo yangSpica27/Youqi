@@ -89,8 +89,8 @@ dependencies {
   implementation 'androidx.activity:activity-ktx:1.4.0'
 
 
-  // Lottie 动画库
-  implementation 'com.airbnb.android:lottie:4.2.2'
+//  // Lottie 动画库
+//  implementation 'com.airbnb.android:lottie:4.2.2'
 
   // Preference MMKV
   implementation 'com.tencent:mmkv-static:1.2.11'
@@ -133,8 +133,8 @@ dependencies {
   implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
   implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
 
-  //用于模糊
-  implementation 'no.danielzeller.blurbehindlib:blurbehindlib:1.0.0'
+//  //用于模糊
+//  implementation 'no.danielzeller.blurbehindlib:blurbehindlib:1.0.0'
 
   def dialogx_version = "0.0.44.beta9"
   implementation "com.github.kongzue.DialogX:DialogX:${dialogx_version}"
@@ -143,6 +143,8 @@ dependencies {
   implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
   implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 
+
+  implementation 'io.github.everythingme:overscroll-decor-android:1.1.1'
 
   // 富文本
   implementation "io.noties.markwon:core:${markwonVersion}"
