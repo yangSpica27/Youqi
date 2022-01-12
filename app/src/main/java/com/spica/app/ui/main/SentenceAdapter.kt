@@ -27,6 +27,7 @@ class SentenceAdapter(val activity: Activity) :
         addItemType(PIC,R.layout.item_date_pic)
     }
 
+
     override fun convert(holder: BaseViewHolder, item: YData) {
 
 
@@ -80,7 +81,8 @@ class SentenceAdapter(val activity: Activity) :
                 val itemBinding = ItemDatePicBinding.bind(holder.itemView)
                 itemBinding.tvFrom.text = item.content.title
                 doOnMainThreadIdle({
-                    itemBinding.ivPic.load(item.content.picture)
+                    itemBinding.ivPic.load(item.content.picture){
+                    }
                 })
 
             }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:foreground="?attr/selectableItemBackground"
+    android:background="@color/white"
+    android:padding="14dp">
+
+    <TextView
+        android:id="@+id/tv_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:maxLines="2"
+        android:textColor="@color/textColorPrimary"
+        android:text="@string/welcome_desc" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="SPICa27" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="收藏于 1小时前"
+            android:gravity="end" />
+
+    </LinearLayout>
+
+</LinearLayout>

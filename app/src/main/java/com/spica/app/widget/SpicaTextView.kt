@@ -41,9 +41,14 @@ class SpicaTextView : View {
     private val linePaint: Paint = Paint()
 
     constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context?, attrs: AttributeSet) : super(context, attrs) {
+        initStyle(attrs)
+    }
 
-    constructor(context: Context?, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context?, attrs: AttributeSet, defStyleAttr: Int) :
+            super(context, attrs, defStyleAttr) {
+        initStyle(attrs)
+    }
 
     init {
         textPaint.color = Color.WHITE

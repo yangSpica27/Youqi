@@ -48,7 +48,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>() {
         }
         viewBinding.btnEnter.setOnClickListener {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-            finish()
         }
 
 

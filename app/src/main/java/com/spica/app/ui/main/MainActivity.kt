@@ -29,6 +29,7 @@ import com.spica.app.tools.*
 import com.spica.app.tools.calendar.DateFormatter
 import com.spica.app.tools.calendar.LunarCalendar
 import com.spica.app.ui.comment.CommentActivity
+import com.spica.app.ui.login.LoginActivity
 import com.spica.app.ui.setting.SettingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -45,21 +46,28 @@ import java.util.*
 class MainActivity : BindingActivity<ActivityMainBinding>() {
 
 
+    // 这个页面的viewModel
     private val viewModel by viewModels<MainViewModel>()
+
+
+    // 是否登录过
+    private var isLogin by Preference(Preference.IS_LOGIN, false)
 
     private val items: MutableList<YData> = mutableListOf()
 
+    // 当前的颜色集
     private var currentColor = intArrayOf(
         Color.parseColor("#4DB6AC"),
         Color.parseColor("#4FC3F7")
     )
 
+    // 当前的position
     private var currentPosition = 0
 
-    //颜色估值器
+    // 颜色估值器
     private val spicaColorEvaluator: SpicaColorEvaluator = SpicaColorEvaluator()
 
-    //颜色变化动画
+    // 颜色变化动画
     private val colorAnim = ValueAnimator.ofFloat(0F, 1F)
         .apply {
             duration = 500L
@@ -76,6 +84,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     private val cardLayoutManager =
         ViewPagerLayoutManager(this, RecyclerView.HORIZONTAL, true)
 
+    // 布局的适配器
     private val sentenceAdapter: SentenceAdapter by lazy {
         SentenceAdapter(this)
     }
@@ -145,6 +154,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         }
 
 
+        // 点击72候
         viewBinding.tv72.setOnClickListener {
 
         }
@@ -170,22 +180,21 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             transparentNavigationBar()
         }
 
-        //布局整体下沉
+        //布局整体下沉适配状态栏
         val lp = viewBinding.tv72.layoutParams as ConstraintLayout.LayoutParams
         lp.updateMargins(
             top = lp.topMargin + statusBarHeight
         )
         viewBinding.tv72.layoutParams = lp
+
+
         //设置默认背景
         viewBinding.root.background = bg
 
         //点击头像
         viewBinding.ivAvatar.setOnClickListener {
-
             val intent = Intent(this, SettingActivity::class.java)
-
             startActivity(intent)
-
         }
 
         // 点击评论
@@ -295,6 +304,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         viewBinding.rvCard.adapter = sentenceAdapter
     }
 
+    // 传入页面
     override fun setupViewBinding(inflater: LayoutInflater):
             ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+
 }

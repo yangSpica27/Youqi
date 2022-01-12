@@ -11,9 +11,12 @@
         android:id="@+id/icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_margin="14dp"
         android:src="@drawable/ic_default_avatar"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="14dp" />
 
     <TextView
         android:id="@+id/category_name"
