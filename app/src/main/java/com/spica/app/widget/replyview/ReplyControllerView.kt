@@ -55,17 +55,15 @@ class ReplyControllerView : LinearLayout {
                 )
             )
 
+
+
+
         binding.chatEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(char: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
             override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
                 if (text.isNullOrEmpty()) {
-                    initTransitions()
-                    binding.chatImg.show()
                     binding.chatSend.hide()
                 } else {
-                    initTransitions()
-                    binding.chatImg.hide()
                     binding.chatSend.show()
                 }
 
@@ -76,85 +74,10 @@ class ReplyControllerView : LinearLayout {
     }
 
 
-    private fun initTransitions() {
-        post {
-            binding.sendLl.layoutTransition = createTransitions()
-            binding.editLl.layoutTransition = createEditTransitions()
-        }
-    }
 
 
-    @SuppressLint("ObjectAnimatorBinding")
-    private fun createEditTransitions(): LayoutTransition {
-        val scaleDownTransX = 24.dp
-        val scaleDown = ObjectAnimator.ofPropertyValuesHolder(
-            null as Any?,
-            PropertyValuesHolder.ofFloat("scaleX", 1f, 0.3f),
-            PropertyValuesHolder.ofFloat("scaleY", 1f, 0.3f),
-            PropertyValuesHolder.ofFloat("alpha", 1f, 0f),
-            PropertyValuesHolder.ofFloat("translationX", scaleDownTransX.toFloat())
-        ).apply {
-            duration = 50
-            interpolator = DecelerateInterpolator()
-        }
-
-        val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
-            null as Any?,
-            PropertyValuesHolder.ofFloat("scaleX", 0.3f, 1f),
-            PropertyValuesHolder.ofFloat("scaleY", 0.3f, 1f),
-            PropertyValuesHolder.ofFloat("alpha", 0f, 1f),
-            PropertyValuesHolder.ofFloat("translationX", 0f)
-        ).apply {
-            duration = 50
-            interpolator = DecelerateInterpolator()
-        }
-
-        return getLayoutTransition(scaleUp, scaleDown)
-    }
-
-    @SuppressLint("ObjectAnimatorBinding")
-    private fun createTransitions(): LayoutTransition {
-        val scaleDownTransX = 24.dp
-        val scaleDown = ObjectAnimator.ofPropertyValuesHolder(
-            null as Any?,
-            PropertyValuesHolder.ofFloat("scaleX", 1f, 0.3f),
-            PropertyValuesHolder.ofFloat("scaleY", 1f, 0.3f),
-            PropertyValuesHolder.ofFloat("alpha", 1f, 0f),
-            PropertyValuesHolder.ofFloat("translationX", -scaleDownTransX.toFloat())
-        ).apply {
-            duration = 350
-            interpolator = DecelerateInterpolator()
-        }
-
-        val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
-            null as Any?,
-            PropertyValuesHolder.ofFloat("scaleX", 0.3f, 1f),
-            PropertyValuesHolder.ofFloat("scaleY", 0.3f, 1f),
-            PropertyValuesHolder.ofFloat("alpha", 0f, 1f),
-            PropertyValuesHolder.ofFloat("translationX", 0f)
-        ).apply {
-            duration = 350
-            interpolator = DecelerateInterpolator()
-        }
-        return getLayoutTransition(scaleUp, scaleDown)
-    }
 
 
-    private fun getLayoutTransition(
-        scaleUp: ObjectAnimator,
-        scaleDown: ObjectAnimator
-    ): LayoutTransition {
-        val layoutTransition = LayoutTransition()
-        layoutTransition.setAnimator(LayoutTransition.APPEARING, scaleUp)
-        layoutTransition.setAnimator(LayoutTransition.DISAPPEARING, scaleDown)
-        layoutTransition.setStartDelay(LayoutTransition.APPEARING, 0)
-        layoutTransition.setStartDelay(LayoutTransition.DISAPPEARING, 0)
-        layoutTransition.setDuration(LayoutTransition.CHANGE_APPEARING, 100)
-        layoutTransition.setDuration(LayoutTransition.CHANGE_DISAPPEARING, 100)
-        layoutTransition.setStartDelay(LayoutTransition.CHANGE_APPEARING, 0)
-        layoutTransition.setStartDelay(LayoutTransition.CHANGE_DISAPPEARING, 0)
-        return layoutTransition
-    }
 
 
 }

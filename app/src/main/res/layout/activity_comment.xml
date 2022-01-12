@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:panel_layout="@layout/layout_empty"
-                app:panel_trigger="@id/chat_img" />
+                app:panel_trigger="@id/btn_emoji" />
 
         </com.effective.android.panel.view.panel.PanelContainer>
 
