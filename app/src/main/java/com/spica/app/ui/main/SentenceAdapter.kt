@@ -1,5 +1,6 @@
 package com.spica.app.ui.main
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
@@ -38,6 +39,7 @@ class SentenceAdapter(val activity: Activity) :
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: YData) {
 
 
@@ -46,7 +48,7 @@ class SentenceAdapter(val activity: Activity) :
             NORMAL ->{
                 val itemBinding = ItemDateNormalBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
-                itemBinding.tvFrom.text = item.content.personSim
+                itemBinding.tvFrom.text = "「${item.content.personSim}」"
                 if (item.content.isArticle == 1) {
                     itemBinding.btnDetail.show()
                     itemBinding.cdContainer.setOnClickListener {
@@ -68,7 +70,7 @@ class SentenceAdapter(val activity: Activity) :
             AUDIO ->{
                 val itemBinding = ItemDateNormalBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
-                itemBinding.tvFrom.text = item.content.personSim
+                itemBinding.tvFrom.text = "「${item.content.personSim}」"
                 if (item.content.isArticle == 1) {
                     itemBinding.btnDetail.show()
                     itemBinding.cdContainer.setOnClickListener {
@@ -101,7 +103,7 @@ class SentenceAdapter(val activity: Activity) :
             ARTICLE ->{
                 val itemBinding = ItemDateArticleBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
-                itemBinding.tvFrom.text = item.content.personSim
+                itemBinding.tvFrom.text = "「${item.content.personSim}」"
                 if (item.content.isArticle == 1) {
                     itemBinding.btnDetail.show()
                     itemBinding.cdContainer.setOnClickListener {
