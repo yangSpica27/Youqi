@@ -54,7 +54,8 @@ class YRepostory
         contentId: Int,
         page: Int,
         type: Int? = null,
-        onStart: () -> Unit,
+        onStart:
+            () -> Unit,
         onComplete: () -> Unit,
         onError: (String?) -> Unit,
     ) = flow {

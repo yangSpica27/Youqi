@@ -56,9 +56,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     private val viewModel by viewModels<MainViewModel>()
 
 
-    // 是否登录过
-    private var isLogin by Preference(Preference.IS_LOGIN, false)
-
     private val items: MutableList<YData> = mutableListOf()
 
     // 当前的颜色集
@@ -185,40 +182,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
                 // 避免重复计算浪费性能
                 initValue()
 
-                // 异步环境执行耗时的操作
-                revealAnim = ViewAnimationUtils.createCircularReveal(
-                    viewBinding.ivPic,
-                    startX.toInt() + viewBinding.tv72.width / 2,
-                    startY.toInt() + viewBinding.tv72.height / 2,
-                    0F,
-                    maxRadius.toFloat()
-                )
-
-                revealAnim?.duration = 500L
-
-                Timber.e("坐标X:${startX}坐标Y:${startY}")
-                Timber.e(maxRadius.toString() + "px")
-
-                revealAnim?.addListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(p0: Animator?) {
-                        viewBinding.ivPic.show()
-                    }
-
-                    override fun onAnimationEnd(p0: Animator) {
-                        viewBinding.ivPic.show()
-                        p0.removeAllListeners()
-                    }
-
-                    override fun onAnimationCancel(p0: Animator?) = Unit
-
-                    override fun onAnimationRepeat(p0: Animator?) = Unit
-
-                })
-
-                // 回到主线程执行
-                viewBinding.root.post {
-                    revealAnim?.start()
-                }
+                // 计算完成开始动画
+                picAnim()
 
             }
         }
@@ -232,20 +197,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             // 反向动画
             resumePicAnim()
         }
-
-        val lunarCalendar = LunarCalendar()
-
-        val formatter = DateFormatter(resources)
-
-        viewBinding.tv24.text = "${
-            formatter
-                .getSolarTermName(
-                    lunarCalendar
-                        .getGregorianDate(Calendar.MONTH) * 2
-                )
-        } ${formatter.getMonthName(lunarCalendar)}" +
-                "${formatter.getDayName(lunarCalendar)}"
-
 
         //透明状态栏
         immersionBar {
@@ -325,6 +276,50 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     }
 
 
+    /**
+     * 打开揭幕动画
+     */
+    private suspend fun picAnim() = withContext(Dispatchers.Default) {
+        // 异步环境执行耗时的操作
+        revealAnim = ViewAnimationUtils.createCircularReveal(
+            viewBinding.ivPic,
+            startX.toInt() + viewBinding.tv72.width / 2,
+            startY.toInt() + viewBinding.tv72.height / 2,
+            0F,
+            maxRadius.toFloat()
+        )
+
+        revealAnim?.duration = 500L
+
+        Timber.e("坐标X:${startX}坐标Y:${startY}")
+        Timber.e(maxRadius.toString() + "px")
+
+        revealAnim?.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(p0: Animator?) {
+                viewBinding.ivPic.show()
+            }
+
+            override fun onAnimationEnd(p0: Animator) {
+                viewBinding.ivPic.show()
+                p0.removeAllListeners()
+            }
+
+            override fun onAnimationCancel(p0: Animator?) = Unit
+
+            override fun onAnimationRepeat(p0: Animator?) = Unit
+
+        })
+
+        // 回到主线程执行
+        viewBinding.root.post {
+            revealAnim?.start()
+        }
+    }
+
+
+    /**
+     * 关闭揭幕动画
+     */
     private fun resumePicAnim() {
         lifecycleScope.launch {
 
@@ -336,9 +331,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
                 maxRadius.toFloat(),
                 0F
             )
-
             revealAnim?.duration = 500L
-
             revealAnim?.addListener(object : Animator.AnimatorListener {
                 override fun onAnimationStart(p0: Animator?) = Unit
 

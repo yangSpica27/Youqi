@@ -5,6 +5,10 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
+
+/**
+ * 持久层模块
+ */
 //@Module
 //@InstallIn(SingletonComponent::class)
 object PersistenceModule {
