@@ -20,11 +20,12 @@ class MainViewModel
     private val yRepostory: YRepostory
 ) : ViewModel() {
 
-    //是否正在加载
+    // 是否正在加载
     val isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    //错误消息
+    // 错误消息
     val errorMessage: MutableStateFlow<String?> = MutableStateFlow("")
+
 
     private lateinit var _dateListFlow: StateFlow<YDateList?>
 

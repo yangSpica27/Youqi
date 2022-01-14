@@ -11,6 +11,7 @@
     <string name="calendar_firday">星期五</string>
     <string name="calendar_saturday">星期六</string>
     <string name="back_today"><![CDATA[回到今天 >]]></string>
+    <string name="sentence_header">“</string>
     <string name="project_address">开源地址：https://github.com/yangSpica27/Youqi.git</string>
     <string name="exit_login">退出登录</string>
 

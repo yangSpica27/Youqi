@@ -34,6 +34,9 @@ class SpicaTextView : View {
      */
     private var mouthBound: Rect = Rect()
 
+    /**
+     * 绘制日期的骨架
+     */
     private var dayBound: Rect = Rect()
 
     private val textPaint: TextPaint = TextPaint()
@@ -52,7 +55,7 @@ class SpicaTextView : View {
 
     init {
         textPaint.color = Color.WHITE
-        textPaint.textSize = 20.sp.toFloat()
+        textPaint.textSize = 18.sp.toFloat()
         linePaint.color = Color.WHITE
         linePaint.strokeWidth = 2.dp.toFloat()
 

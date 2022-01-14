@@ -18,6 +18,7 @@ import com.spica.app.model.date.*
 import com.spica.app.tools.doOnMainThreadIdle
 import com.spica.app.ui.detail.DetailActivity
 
+
 /**
  * 每日句子的适配器
  */
