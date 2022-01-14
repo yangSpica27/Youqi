@@ -48,6 +48,7 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
             transparentNavigationBar()
         }
 
+        // 下沉一个状态栏的高度以适配沉浸式状态栏
         viewBinding.toolbar.apply {
             updateLayoutParams<ConstraintLayout.LayoutParams> {
                 updateMargins(top = marginTop + statusBarHeight)
@@ -55,6 +56,7 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
         }
 
 
+        // 绑定软键盘和对应view
         mHelper = PanelSwitchHelper.Builder(this)
             .addContentScrollMeasurer {
                 getScrollDistance { defaultDistance -> defaultDistance }
@@ -64,6 +66,7 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
             .build(false)
 
 
+        // cpu空闲时再初始化重任务
         doOnMainThreadIdle({
             initRecyclerView()
         })
@@ -73,9 +76,11 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.commentList.collectLatest {
                 if (it.isEmpty()) {
+                    //返回空数组表示到底 加载结束
                     commentAdapter.loadMoreModule.loadMoreEnd()
                     return@collectLatest
                 }
+                // 加添数据加载结束
                 commentAdapter.addData(it)
                 commentAdapter.loadMoreModule.loadMoreComplete()
             }
@@ -83,6 +88,7 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
 
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.errorMessage.collectLatest {
+                // 加载出现异常
                 commentAdapter.loadMoreModule.loadMoreFail()
             }
         }
@@ -96,6 +102,7 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
 
         lifecycleScope.launch {
             viewModel.commentId = commentId
+            // 开始网络请求
             viewModel.loadMoreComment(true)
         }
 
@@ -115,6 +122,7 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
         commentAdapter.setEmptyView(R.layout.layout_comment_empty)
         commentAdapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.AlphaIn)
 
+        // 添加分割线
         dividerBuilder()
             .colorRes(R.color.line_divider)
             .size(2)

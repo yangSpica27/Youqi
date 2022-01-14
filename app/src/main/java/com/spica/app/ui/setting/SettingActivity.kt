@@ -62,6 +62,7 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>() {
 
     private fun initRecyclerview() {
         adapter.addData(mutableListOf("", "", "", ""))
+        // 添加分割线
         dividerBuilder()
             .colorRes(R.color.line_divider)
             .size(2)

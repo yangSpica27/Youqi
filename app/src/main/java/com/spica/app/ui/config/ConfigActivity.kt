@@ -23,12 +23,14 @@ class ConfigActivity : BindingActivity<ActivityConfigBinding>() {
 
     override fun initializer() {
 
+        // 沉浸式状态栏
         immersionBar {
             transparentStatusBar()
             statusBarDarkFont(true)
             transparentNavigationBar()
         }
 
+        // 线程空闲时再初始化列表
         doOnMainThreadIdle(
             { initRecyclerview() }
         )
@@ -46,6 +48,7 @@ class ConfigActivity : BindingActivity<ActivityConfigBinding>() {
         )
         adapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.SlideInBottom)
         adapter.animationEnable = true
+        // 添加分割线
         dividerBuilder()
             .colorRes(R.color.line_divider)
             .size(2)

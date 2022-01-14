@@ -35,6 +35,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>() {
 
     override fun initializer() {
 
+        // 沉浸式状态栏
         immersionBar() {
             transparentStatusBar()
             statusBarDarkFont(true)
@@ -43,11 +44,15 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>() {
 
         FluidContentResizer.listen(this)
 
+        // 点击登录
         viewBinding.btnLogin.setOnClickListener {
             loginDialog.show(this)
         }
+
+        // 点击直接进入
         viewBinding.btnEnter.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            startActivity(Intent(this@LoginActivity,
+                MainActivity::class.java))
         }
 
 

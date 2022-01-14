@@ -80,12 +80,16 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         }
 
 
+    // 揭幕动画的圆心x坐标
     private var startX = 0F
 
+    // 揭幕动画的圆心y坐标
     private var startY = 0F
 
+    // 揭幕动画最大半径数
     private var maxRadius = 0
 
+    // 揭幕动画对象
     private var revealAnim: Animator? = null
 
     // 背景
@@ -106,6 +110,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // 设置容器动画回调
         window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
         setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
         window.sharedElementsUseOverlay = false
@@ -115,8 +120,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     @SuppressLint("SetTextI18n")
     override fun initializer() {
 
+        // 监听错误信息流
         lifecycleScope.launch(Dispatchers.Main) {
-
             viewModel.errorMessage.collectLatest {
                 // 错误信息
                 withContext(Dispatchers.Main) {
@@ -131,6 +136,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             }
         }
 
+        // 监听状态信息
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.isLoading.collectLatest {
                 // 是否正在加载
@@ -146,6 +152,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             }
         }
 
+        // 获取日期卡牌信息
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.dateList.collectLatest {
                 it?.let {
@@ -164,6 +171,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         }
 
 
+        // 开始网络请求
         lifecycleScope.launch {
             viewModel.dateList()
         }
@@ -173,33 +181,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         viewBinding.tv72.setOnClickListener {
             viewBinding.ivPic.load(items[currentPosition].wuhouPicture)
             lifecycleScope.launch {
-                startX = viewBinding.tv72.x
-                startY = viewBinding.tv72.y
-                //将屏幕分成4个小矩形
-                val leftTop = RectF(0F, 0F, startX + 0F, startY + 0F)
-                val rightTop = RectF(
-                    leftTop.right, 0F,
-                    viewBinding.root.right.toFloat(), leftTop.bottom
-                )
-                val leftBottom = RectF(
-                    0F, leftTop.bottom, leftTop.right,
-                    viewBinding.root.bottom.toFloat()
-                )
-                val rightBottom = RectF(
-                    leftBottom.right, leftTop.bottom,
-                    viewBinding.root.right.toFloat(), leftBottom.bottom
-                )
-                //分别获取对角线长度
-                val leftTopHypotenuse = sqrt((leftTop.width().pow(2) + leftTop.height().pow(2)).toDouble())
-                val rightTopHypotenuse = sqrt((rightTop.width().pow(2) + rightTop.height().pow(2)).toDouble())
-                val leftBottomHypotenuse = sqrt((leftBottom.width().pow(2) + leftBottom.height().pow(2)).toDouble())
-                val rightBottomHypotenuse = sqrt((rightBottom.width().pow(2) + rightBottom.height().pow(2)).toDouble())
 
-                //取最大值
-                maxRadius = leftTopHypotenuse.coerceAtLeast(rightTopHypotenuse)
-                    .coerceAtLeast(leftBottomHypotenuse.coerceAtLeast(rightBottomHypotenuse))
-                    .toInt()
+                // 避免重复计算浪费性能
+                initValue()
 
+                // 异步环境执行耗时的操作
                 revealAnim = ViewAnimationUtils.createCircularReveal(
                     viewBinding.ivPic,
                     startX.toInt() + viewBinding.tv72.width / 2,
@@ -229,77 +215,22 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
                 })
 
+                // 回到主线程执行
                 viewBinding.root.post {
                     revealAnim?.start()
                 }
 
             }
-
-
         }
+
 
         viewBinding.ivPic.setOnClickListener {
             if (revealAnim?.isRunning == true) {
+                // 动画未结束忽略点击事件
                 return@setOnClickListener
             }
-
-            lifecycleScope.launch {
-                //将屏幕分成4个小矩形
-                val leftTop = RectF(0F, 0F, startX + 0F, startY + 0F)
-                val rightTop = RectF(
-                    leftTop.right, 0F,
-                    viewBinding.root.right.toFloat(), leftTop.bottom
-                )
-                val leftBottom = RectF(
-                    0F, leftTop.bottom, leftTop.right,
-                    viewBinding.root.bottom.toFloat()
-                )
-                val rightBottom = RectF(
-                    leftBottom.right, leftTop.bottom,
-                    viewBinding.root.right.toFloat(), leftBottom.bottom
-                )
-                //分别获取对角线长度
-                val leftTopHypotenuse = sqrt((leftTop.width().pow(2) + leftTop.height().pow(2)).toDouble())
-                val rightTopHypotenuse = sqrt((rightTop.width().pow(2) + rightTop.height().pow(2)).toDouble())
-                val leftBottomHypotenuse = sqrt((leftBottom.width().pow(2) + leftBottom.height().pow(2)).toDouble())
-                val rightBottomHypotenuse = sqrt((rightBottom.width().pow(2) + rightBottom.height().pow(2)).toDouble())
-
-                //取最大值
-                maxRadius = leftTopHypotenuse.coerceAtLeast(rightTopHypotenuse)
-                    .coerceAtLeast(leftBottomHypotenuse.coerceAtLeast(rightBottomHypotenuse)).toInt()
-
-                revealAnim = ViewAnimationUtils.createCircularReveal(
-                    viewBinding.ivPic,
-                    startX.toInt() + viewBinding.tv72.width / 2,
-                    startY.toInt() + viewBinding.tv72.height / 2,
-                    maxRadius.toFloat(),
-                    0F
-                )
-
-                revealAnim?.duration = 500L
-
-
-                revealAnim?.addListener(object : Animator.AnimatorListener {
-                    override fun onAnimationStart(p0: Animator?) {
-
-                    }
-
-                    override fun onAnimationEnd(p0: Animator) {
-                        viewBinding.ivPic.hide()
-                        p0.removeAllListeners()
-                    }
-
-                    override fun onAnimationCancel(p0: Animator?) = Unit
-
-                    override fun onAnimationRepeat(p0: Animator?) = Unit
-
-                })
-
-                viewBinding.root.post {
-                    revealAnim?.start()
-                }
-
-            }
+            // 反向动画
+            resumePicAnim()
         }
 
         val lunarCalendar = LunarCalendar()
@@ -358,6 +289,76 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
     }
 
+    /**
+     * 初始化动画参数
+     */
+    private fun initValue() {
+        if (maxRadius == 0) {
+            // 最大半径为0时触发计算
+            startX = viewBinding.tv72.x
+            startY = viewBinding.tv72.y
+            //将屏幕分成4个小矩形
+            val leftTop = RectF(0F, 0F, startX + 0F, startY + 0F)
+            val rightTop = RectF(
+                leftTop.right, 0F,
+                viewBinding.root.right.toFloat(), leftTop.bottom
+            )
+            val leftBottom = RectF(
+                0F, leftTop.bottom, leftTop.right,
+                viewBinding.root.bottom.toFloat()
+            )
+            val rightBottom = RectF(
+                leftBottom.right, leftTop.bottom,
+                viewBinding.root.right.toFloat(), leftBottom.bottom
+            )
+            //分别获取对角线长度
+            val leftTopHypotenuse = sqrt((leftTop.width().pow(2) + leftTop.height().pow(2)).toDouble())
+            val rightTopHypotenuse = sqrt((rightTop.width().pow(2) + rightTop.height().pow(2)).toDouble())
+            val leftBottomHypotenuse = sqrt((leftBottom.width().pow(2) + leftBottom.height().pow(2)).toDouble())
+            val rightBottomHypotenuse = sqrt((rightBottom.width().pow(2) + rightBottom.height().pow(2)).toDouble())
+
+            //取最大值 为最大半径
+            maxRadius = leftTopHypotenuse.coerceAtLeast(rightTopHypotenuse)
+                .coerceAtLeast(leftBottomHypotenuse.coerceAtLeast(rightBottomHypotenuse))
+                .toInt()
+        }
+    }
+
+
+    private fun resumePicAnim() {
+        lifecycleScope.launch {
+
+            // 逆向动画 反向半径参数
+            revealAnim = ViewAnimationUtils.createCircularReveal(
+                viewBinding.ivPic,
+                startX.toInt() + viewBinding.tv72.width / 2,
+                startY.toInt() + viewBinding.tv72.height / 2,
+                maxRadius.toFloat(),
+                0F
+            )
+
+            revealAnim?.duration = 500L
+
+            revealAnim?.addListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(p0: Animator?) = Unit
+
+                override fun onAnimationEnd(p0: Animator) {
+                    viewBinding.ivPic.hide()
+                    p0.removeAllListeners()
+                }
+
+                override fun onAnimationCancel(p0: Animator?) = Unit
+
+                override fun onAnimationRepeat(p0: Animator?) = Unit
+            })
+
+            viewBinding.root.post {
+                revealAnim?.start()
+            }
+        }
+    }
+
+    // 设置顶部和底部的信息
     @Suppress("deprecation")
     private suspend fun initHeaderAndBottomBar() = withContext(Dispatchers.Main) {
         val currentDate = items[currentPosition].date.getDate()
@@ -375,7 +376,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
     override fun onBackPressed() {
         if (viewBinding.ivPic.visibility == View.VISIBLE) {
-            viewBinding.ivPic.hide()
+            resumePicAnim()
             return
         }
         super.onBackPressed()
@@ -390,6 +391,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
             override fun onInitComplete() = Unit
 
+            // 卡牌切换的监听
             override fun onPageSelected(position: Int, isBottom: Boolean) {
                 currentPosition = position
 
@@ -423,6 +425,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
                     currentColor[0] = colorTop as Int
                     currentColor[1] = colorBottom as Int
 
+                    // 生成新的渐变色背景并且应用
                     val bg = GradientDrawable(
                         GradientDrawable.Orientation.TOP_BOTTOM,
                         currentColor
