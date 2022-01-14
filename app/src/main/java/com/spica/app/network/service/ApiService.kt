@@ -3,8 +3,7 @@ package com.spica.app.network.service
 import com.skydoves.sandwich.ApiResponse
 import com.spica.app.model.comment.CommentItem
 import com.spica.app.model.date.YDateList
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 @Suppress("unused")
@@ -26,5 +25,30 @@ interface ApiService {
     @Query("type")
     type: Int?
   ): ApiResponse<List<CommentItem>>
+
+
+  // 登录
+  @FormUrlEncoded
+  @POST("login")
+  suspend fun login(
+    @Field("login_type")
+    loginType: Int = 1,
+    @Field("code")
+    code: String,
+    @Field("account")
+    account: String,
+    @Field("access_token")
+    accessToken: String = ""
+  ): ApiResponse<Any>
+
+
+  /**
+   * 发送验证码
+   */
+  @FormUrlEncoded
+  @POST("sendVerificationCode")
+  suspend fun sendCode(
+    @Field("mobile") mobile: String
+  ): ApiResponse<Any>
 
 }

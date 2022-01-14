@@ -291,9 +291,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
         revealAnim?.duration = 500L
 
-        Timber.e("坐标X:${startX}坐标Y:${startY}")
-        Timber.e(maxRadius.toString() + "px")
-
         revealAnim?.addListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator?) {
                 viewBinding.ivPic.show()
@@ -437,7 +434,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         //布局管理器
         viewBinding.rvCard.layoutManager =
             cardLayoutManager
-
 
         //卡片的适配器
         viewBinding.rvCard.adapter = sentenceAdapter
