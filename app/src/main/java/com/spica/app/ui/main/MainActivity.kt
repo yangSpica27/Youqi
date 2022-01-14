@@ -1,13 +1,16 @@
 package com.spica.app.ui.main
 
+import android.animation.Animator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.RectF
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewAnimationUtils
 import android.view.Window
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -15,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateMargins
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.gyf.immersionbar.ktx.immersionBar
@@ -29,14 +33,16 @@ import com.spica.app.tools.*
 import com.spica.app.tools.calendar.DateFormatter
 import com.spica.app.tools.calendar.LunarCalendar
 import com.spica.app.ui.comment.CommentActivity
-import com.spica.app.ui.login.LoginActivity
 import com.spica.app.ui.setting.SettingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.*
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 
 /**
@@ -72,6 +78,15 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         .apply {
             duration = 500L
         }
+
+
+    private var startX = 0F
+
+    private var startY = 0F
+
+    private var maxRadius = 0
+
+    private var revealAnim: Animator? = null
 
     // 背景
     private var bg =
@@ -156,7 +171,135 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
         // 点击72候
         viewBinding.tv72.setOnClickListener {
+            viewBinding.ivPic.load(items[currentPosition].wuhouPicture)
+            lifecycleScope.launch {
+                startX = viewBinding.tv72.x
+                startY = viewBinding.tv72.y
+                //将屏幕分成4个小矩形
+                val leftTop = RectF(0F, 0F, startX + 0F, startY + 0F)
+                val rightTop = RectF(
+                    leftTop.right, 0F,
+                    viewBinding.root.right.toFloat(), leftTop.bottom
+                )
+                val leftBottom = RectF(
+                    0F, leftTop.bottom, leftTop.right,
+                    viewBinding.root.bottom.toFloat()
+                )
+                val rightBottom = RectF(
+                    leftBottom.right, leftTop.bottom,
+                    viewBinding.root.right.toFloat(), leftBottom.bottom
+                )
+                //分别获取对角线长度
+                val leftTopHypotenuse = sqrt((leftTop.width().pow(2) + leftTop.height().pow(2)).toDouble())
+                val rightTopHypotenuse = sqrt((rightTop.width().pow(2) + rightTop.height().pow(2)).toDouble())
+                val leftBottomHypotenuse = sqrt((leftBottom.width().pow(2) + leftBottom.height().pow(2)).toDouble())
+                val rightBottomHypotenuse = sqrt((rightBottom.width().pow(2) + rightBottom.height().pow(2)).toDouble())
 
+                //取最大值
+                maxRadius = leftTopHypotenuse.coerceAtLeast(rightTopHypotenuse)
+                    .coerceAtLeast(leftBottomHypotenuse.coerceAtLeast(rightBottomHypotenuse))
+                    .toInt()
+
+                revealAnim = ViewAnimationUtils.createCircularReveal(
+                    viewBinding.ivPic,
+                    startX.toInt() + viewBinding.tv72.width / 2,
+                    startY.toInt() + viewBinding.tv72.height / 2,
+                    0F,
+                    maxRadius.toFloat()
+                )
+
+                revealAnim?.duration = 500L
+
+                Timber.e("坐标X:${startX}坐标Y:${startY}")
+                Timber.e(maxRadius.toString() + "px")
+
+                revealAnim?.addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(p0: Animator?) {
+                        viewBinding.ivPic.show()
+                    }
+
+                    override fun onAnimationEnd(p0: Animator) {
+                        viewBinding.ivPic.show()
+                        p0.removeAllListeners()
+                    }
+
+                    override fun onAnimationCancel(p0: Animator?) = Unit
+
+                    override fun onAnimationRepeat(p0: Animator?) = Unit
+
+                })
+
+                viewBinding.root.post {
+                    revealAnim?.start()
+                }
+
+            }
+
+
+        }
+
+        viewBinding.ivPic.setOnClickListener {
+            if (revealAnim?.isRunning == true) {
+                return@setOnClickListener
+            }
+
+            lifecycleScope.launch {
+                //将屏幕分成4个小矩形
+                val leftTop = RectF(0F, 0F, startX + 0F, startY + 0F)
+                val rightTop = RectF(
+                    leftTop.right, 0F,
+                    viewBinding.root.right.toFloat(), leftTop.bottom
+                )
+                val leftBottom = RectF(
+                    0F, leftTop.bottom, leftTop.right,
+                    viewBinding.root.bottom.toFloat()
+                )
+                val rightBottom = RectF(
+                    leftBottom.right, leftTop.bottom,
+                    viewBinding.root.right.toFloat(), leftBottom.bottom
+                )
+                //分别获取对角线长度
+                val leftTopHypotenuse = sqrt((leftTop.width().pow(2) + leftTop.height().pow(2)).toDouble())
+                val rightTopHypotenuse = sqrt((rightTop.width().pow(2) + rightTop.height().pow(2)).toDouble())
+                val leftBottomHypotenuse = sqrt((leftBottom.width().pow(2) + leftBottom.height().pow(2)).toDouble())
+                val rightBottomHypotenuse = sqrt((rightBottom.width().pow(2) + rightBottom.height().pow(2)).toDouble())
+
+                //取最大值
+                maxRadius = leftTopHypotenuse.coerceAtLeast(rightTopHypotenuse)
+                    .coerceAtLeast(leftBottomHypotenuse.coerceAtLeast(rightBottomHypotenuse)).toInt()
+
+                revealAnim = ViewAnimationUtils.createCircularReveal(
+                    viewBinding.ivPic,
+                    startX.toInt() + viewBinding.tv72.width / 2,
+                    startY.toInt() + viewBinding.tv72.height / 2,
+                    maxRadius.toFloat(),
+                    0F
+                )
+
+                revealAnim?.duration = 500L
+
+
+                revealAnim?.addListener(object : Animator.AnimatorListener {
+                    override fun onAnimationStart(p0: Animator?) {
+
+                    }
+
+                    override fun onAnimationEnd(p0: Animator) {
+                        viewBinding.ivPic.hide()
+                        p0.removeAllListeners()
+                    }
+
+                    override fun onAnimationCancel(p0: Animator?) = Unit
+
+                    override fun onAnimationRepeat(p0: Animator?) = Unit
+
+                })
+
+                viewBinding.root.post {
+                    revealAnim?.start()
+                }
+
+            }
         }
 
         val lunarCalendar = LunarCalendar()

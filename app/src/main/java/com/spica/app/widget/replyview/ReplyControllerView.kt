@@ -1,18 +1,12 @@
 package com.spica.app.widget.replyview
 
-import android.animation.LayoutTransition
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
-import android.annotation.SuppressLint
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.animation.DecelerateInterpolator
+import android.view.ViewAnimationUtils
 import android.widget.LinearLayout
+import androidx.core.widget.doOnTextChanged
 import com.spica.app.databinding.ViewReplyControllerBinding
-import com.spica.app.extensions.dp
 import com.spica.app.extensions.hide
 import com.spica.app.extensions.show
 import io.noties.markwon.Markwon
@@ -46,6 +40,8 @@ class ReplyControllerView : LinearLayout {
             this
         )
 
+
+
         binding.chatEt
             .addTextChangedListener(
                 MarkwonEditorTextWatcher.withPreRender(
@@ -56,23 +52,18 @@ class ReplyControllerView : LinearLayout {
             )
 
 
-
-
-        binding.chatEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(char: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-            override fun onTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        binding.chatEt.doOnTextChanged { text, _, _, _ ->
+           run {
                 if (text.isNullOrEmpty()) {
                     binding.chatSend.hide()
                 } else {
                     binding.chatSend.show()
                 }
-
             }
+        }
 
-            override fun afterTextChanged(p0: Editable?) = Unit
-        })
+
     }
-
 
 
 
