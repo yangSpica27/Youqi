@@ -9,4 +9,9 @@
     <external-path
         name="external_files"
         path="." />
+
+    <external-files-path name="opensdk_external" path="Images/tmp"/>
+
+    <root-path name="opensdk_root" path=""/>
+
 </paths>

@@ -17,11 +17,13 @@ import cn.tagux.calendar.ui.main.MainActivity
 import com.gyf.immersionbar.ktx.immersionBar
 import com.kongzue.dialogx.dialogs.FullScreenDialog
 import com.kongzue.dialogx.interfaces.OnBindView
+import com.tencent.connect.common.Constants
 import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
 import com.tencent.tauth.UiError
 import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONObject
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -54,15 +56,19 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>() {
                             }
 
                             override fun onError(error: UiError) {
-                                Toast.makeText(this@LoginActivity, error.errorMessage, Toast.LENGTH_SHORT).show()
+                                Timber.e(error.toString())
+                                Toast.makeText(this@LoginActivity, "error:"+error.errorMessage, Toast.LENGTH_SHORT).show()
                             }
 
                             override fun onCancel() {
                                 Toast.makeText(this@LoginActivity, "登陆取消", Toast.LENGTH_LONG).show()
                             }
 
-                            override fun onWarning(p0: Int) = Unit
-
+                            override fun onWarning(code: Int) {
+                                if (code == Constants.ERROR_NO_AUTHORITY){
+                                    Toast.makeText(this@LoginActivity,"onWarning: 请授权手Q访问分享的文件的读取权限!",Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         })
                 }
             }

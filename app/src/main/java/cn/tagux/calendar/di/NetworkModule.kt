@@ -35,7 +35,10 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideQQLogin(@ApplicationContext context: Context): Tencent {
-        return Tencent.createInstance("1106365828", context)
+
+        return Tencent.createInstance("1106365828",
+            context,
+            "cn.tagux.calendar.fileProvider")
     }
 
 
