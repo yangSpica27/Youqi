@@ -1,34 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.spica.app">
+    package="cn.tagux.calendar">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:theme="@style/Theme.App"
-        android:name=".App"
+        android:name="cn.tagux.calendar.App"
         android:allowBackup="false"
         android:icon="@drawable/ic_app"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:maxAspectRatio="2.4"
         android:resizeableActivity="true"
         android:supportsRtl="true">
+
+<!--  QQ 登陆-->
+
         <activity
-            android:name=".ui.comment.CommentActivity"
+            android:name="com.tencent.tauth.AuthActivity"
+            android:noHistory="true"
+            android:exported="true"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent1106365828" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+<!--        -->
+
+        <activity
+            android:name="cn.tagux.calendar.ui.comment.CommentActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
-            android:name=".ui.setting.SettingActivity"
+            android:name="cn.tagux.calendar.ui.setting.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name="cn.tagux.calendar.ui.login.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
 
         </activity>
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name="cn.tagux.calendar.ui.main.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="unspecified"
@@ -39,8 +65,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.detail.DetailActivity" />
-        <activity android:name=".ui.config.ConfigActivity" />
+        <activity android:name="cn.tagux.calendar.ui.detail.DetailActivity" />
+        <activity android:name="cn.tagux.calendar.ui.config.ConfigActivity" />
 
         <meta-data
             android:name="android.max_aspect"
@@ -57,16 +83,16 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="com.spica.app.initializer.CoilInitializer"
+                android:name="cn.tagux.calendar.initializer.CoilInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="com.spica.app.initializer.TimberInitializer"
+                android:name="cn.tagux.calendar.initializer.TimberInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="com.spica.app.initializer.MMKVInitializer"
+                android:name="cn.tagux.calendar.initializer.MMKVInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="com.spica.app.initializer.DialogXInitializer"
+                android:name="cn.tagux.calendar.initializer.DialogXInitializer"
                 android:value="androidx.startup" />
         </provider> <!-- 结束 -->
         <!-- 访问画廊必须 -->
@@ -79,6 +105,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+
+
+
     </application>
 
 </manifest>

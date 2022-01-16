@@ -8,10 +8,10 @@ plugins {
 }
 
 android {
-  compileSdk 32
+  compileSdk 31
 
   defaultConfig {
-    applicationId "com.spica.app"
+    applicationId "cn.tagux.calendar"
     minSdk 23
     targetSdk 32
     versionCode 1
@@ -23,9 +23,9 @@ android {
     renderscriptSupportModeEnabled true
 
     javaCompileOptions {
-      annotationProcessorOptions {
-        arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-      }
+//      annotationProcessorOptions {
+//        arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+//      }
     }
 
   }
@@ -72,6 +72,7 @@ android {
 }
 
 dependencies {
+  implementation fileTree(dir: 'libs', include: '*.jar')
 
   // Appcompat
   implementation 'androidx.core:core-ktx:1.7.0'

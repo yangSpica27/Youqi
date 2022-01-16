@@ -90,6 +90,7 @@
         android:background="@color/line_divider" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_login_qq"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

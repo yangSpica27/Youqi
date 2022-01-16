@@ -42,7 +42,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_weight="1" />
 
-            <com.spica.app.widget.replyview.ReplyControllerView
+            <cn.tagux.calendar.widget.replyview.ReplyControllerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

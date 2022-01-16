@@ -46,7 +46,7 @@
             app:layout_constraintStart_toEndOf="@id/btn_emoji"
             android:background="@drawable/bg_edit_round">
 
-            <com.spica.app.widget.replyview.MentionEditText
+            <cn.tagux.calendar.widget.replyview.MentionEditText
                 android:id="@+id/chat_et"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
