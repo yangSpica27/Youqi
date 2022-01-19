@@ -1,6 +1,5 @@
 package cn.tagux.calendar.ui.login
 
-
 import android.Manifest
 import android.content.Intent
 import android.view.LayoutInflater
@@ -17,7 +16,6 @@ import cn.tagux.calendar.ui.main.MainActivity
 import com.gyf.immersionbar.ktx.immersionBar
 import com.kongzue.dialogx.dialogs.FullScreenDialog
 import com.kongzue.dialogx.interfaces.OnBindView
-import com.tencent.connect.common.Constants
 import com.tencent.tauth.IUiListener
 import com.tencent.tauth.Tencent
 import com.tencent.tauth.UiError
@@ -32,12 +30,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LoginActivity : BindingActivity<ActivityLoginBinding>() {
 
-
     @Inject
     lateinit var tencent: Tencent
 
     private val viewModel by viewModels<LoginViewModel>()
-
 
     private val loginDialog by lazy {
         FullScreenDialog.build(object : OnBindView<FullScreenDialog?>(R.layout.dialog_login) {
@@ -46,31 +42,31 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>() {
                 binding.btnLoginQq.setOnClickListener {
 
                     if (!tencent.isSessionValid)
-                        tencent.login(this@LoginActivity, "all", object : IUiListener {
+                        tencent.login(
+                            this@LoginActivity, "all",
+                            object : IUiListener {
 
-                            override fun onComplete(jsonObject: Any) {
-                                val result = jsonObject as JSONObject
-                                val openid = result.optString("openid")
-                                val accessToken = result.optString("access_token")
-                                viewModel.loginIn(openid, accessToken)
+                                override fun onComplete(jsonObject: Any) {
+                                    val result = jsonObject as JSONObject
+                                    val openid = result.optString("openid")
+                                    val accessToken = result.optString("access_token")
+                                    viewModel.loginIn(openid, accessToken)
+                                }
+
+                                override fun onError(error: UiError) {
+                                    Timber.e(error.toString())
+                                    Toast.makeText(this@LoginActivity, "error:" + error.errorMessage, Toast.LENGTH_SHORT).show()
+                                }
+
+                                override fun onCancel() {
+                                    Toast.makeText(this@LoginActivity, "登陆取消", Toast.LENGTH_LONG).show()
+                                }
                             }
-
-                            override fun onError(error: UiError) {
-                                Timber.e(error.toString())
-                                Toast.makeText(this@LoginActivity, "error:"+error.errorMessage, Toast.LENGTH_SHORT).show()
-                            }
-
-                            override fun onCancel() {
-                                Toast.makeText(this@LoginActivity, "登陆取消", Toast.LENGTH_LONG).show()
-                            }
-
-
-                        })
+                        )
                 }
             }
         })
     }
-
 
     private fun checkPermission() {
 
@@ -84,8 +80,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>() {
             ),
             1
         )
-
-
     }
 
     override fun initializer() {
@@ -115,31 +109,29 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>() {
                 )
             )
         }
-
-
     }
-
-
 
     override fun setupViewBinding(inflater: LayoutInflater): ActivityLoginBinding {
         return ActivityLoginBinding.inflate(layoutInflater)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Tencent.onActivityResultData(requestCode,requestCode,data,object :IUiListener{
-            override fun onComplete(p0: Any?) {
-                TODO("Not yet implemented")
-            }
+        Tencent.onActivityResultData(
+            requestCode, requestCode, data,
+            object : IUiListener {
+                override fun onComplete(p0: Any?) {
+                    TODO("Not yet implemented")
+                }
 
-            override fun onError(p0: UiError?) {
-                TODO("Not yet implemented")
-            }
+                override fun onError(p0: UiError?) {
+                    TODO("Not yet implemented")
+                }
 
-            override fun onCancel() {
-                TODO("Not yet implemented")
+                override fun onCancel() {
+                    TODO("Not yet implemented")
+                }
             }
-
-        })
+        )
         super.onActivityResult(requestCode, resultCode, data)
     }
 }

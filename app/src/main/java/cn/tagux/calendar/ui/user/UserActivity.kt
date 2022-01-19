@@ -8,9 +8,7 @@ import cn.tagux.calendar.databinding.ActivityUserBinding
  */
 class UserActivity : BindingActivity<ActivityUserBinding>() {
 
-
     override fun initializer() {
-
     }
 
     override fun setupViewBinding(inflater: LayoutInflater): ActivityUserBinding =

@@ -11,10 +11,9 @@ import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
-class CommentAdapter : BaseQuickAdapter<CommentItem, BaseViewHolder>(R.layout.item_comment) ,LoadMoreModule {
-
+class CommentAdapter : BaseQuickAdapter<CommentItem, BaseViewHolder>(R.layout.item_comment), LoadMoreModule {
 
     private val prettyTime: PrettyTime = PrettyTime()
 
@@ -39,8 +38,5 @@ class CommentAdapter : BaseQuickAdapter<CommentItem, BaseViewHolder>(R.layout.it
         itemBinding.categoryName.text = item.user.nickname
 
         itemBinding.comment.text = item.content
-
     }
-
-
 }

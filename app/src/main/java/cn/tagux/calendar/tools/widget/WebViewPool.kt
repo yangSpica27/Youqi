@@ -1,14 +1,12 @@
 package cn.tagux.calendar.tools.widget
 
-import android.R
 import android.content.Context
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
-import java.util.*
 
 /**
  * webview 复用池
@@ -109,11 +107,8 @@ class WebViewPool {
                 return field
             }
 
-
         val instance: WebViewPool
             get() = _instance!!
-
-
 
         /**
          * Webview 初始化
@@ -123,7 +118,7 @@ class WebViewPool {
             for (i in 0 until maxSize) {
                 val webView = WebView(context)
                 initWebSeting(context, webView)
-                //webView.loadUrl(DEMO_URL);
+                // webView.loadUrl(DEMO_URL);
                 available.add(webView)
             }
         }
@@ -135,30 +130,30 @@ class WebViewPool {
             )
             webView.layoutParams = params
             val webSettings = webView.settings
-            //设置自适应屏幕，两者合用
-            webSettings.useWideViewPort = true //将图片调整到适合webview的大小
+            // 设置自适应屏幕，两者合用
+            webSettings.useWideViewPort = true // 将图片调整到适合webview的大小
             webSettings.loadWithOverviewMode = true // 缩放至屏幕的大小
 
-            //缩放操作
-            webSettings.setSupportZoom(false) //支持缩放，默认为true。是下面那个的前提。
-            webSettings.builtInZoomControls = false //设置内置的缩放控件。若为false，则该WebView不可缩放
-            webSettings.displayZoomControls = true //隐藏原生的缩放控件
+            // 缩放操作
+            webSettings.setSupportZoom(false) // 支持缩放，默认为true。是下面那个的前提。
+            webSettings.builtInZoomControls = false // 设置内置的缩放控件。若为false，则该WebView不可缩放
+            webSettings.displayZoomControls = true // 隐藏原生的缩放控件
 
-            //其他细节操作
-            webSettings.cacheMode = WebSettings.LOAD_DEFAULT //关闭webview中缓存
-            webSettings.allowFileAccess = true //设置可以访问文件
-            webSettings.javaScriptCanOpenWindowsAutomatically = true //支持通过JS打开新窗口
-            webSettings.loadsImagesAutomatically = true //支持自动加载图片
-            webSettings.defaultTextEncodingName = "utf-8" //设置编码格式
+            // 其他细节操作
+            webSettings.cacheMode = WebSettings.LOAD_DEFAULT // 关闭webview中缓存
+            webSettings.allowFileAccess = true // 设置可以访问文件
+            webSettings.javaScriptCanOpenWindowsAutomatically = true // 支持通过JS打开新窗口
+            webSettings.loadsImagesAutomatically = true // 支持自动加载图片
+            webSettings.defaultTextEncodingName = "utf-8" // 设置编码格式
             webSettings.domStorageEnabled = true // 开启 DOM storage API 功能
-            webSettings.databaseEnabled = true //开启 database storage API 功能
-            webSettings.setAppCacheEnabled(true) //开启 Application Caches 功能
+            webSettings.databaseEnabled = true // 开启 database storage API 功能
+            webSettings.setAppCacheEnabled(true) // 开启 Application Caches 功能
             val cacheDirPath = context.filesDir.absolutePath + APP_CACAHE_DIRNAME
-            webSettings.setAppCachePath(cacheDirPath) //设置  Application Caches 缓存目录
-            //页面白屏问题
+            webSettings.setAppCachePath(cacheDirPath) // 设置  Application Caches 缓存目录
+            // 页面白屏问题
             webView.overScrollMode = View.OVER_SCROLL_NEVER
 //            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-            webView.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+            webView.setBackgroundColor(Color.TRANSPARENT)
         }
     }
 }

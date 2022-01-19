@@ -11,7 +11,11 @@ import cn.tagux.calendar.databinding.ItemDatePicBinding
 import cn.tagux.calendar.extensions.dp
 import cn.tagux.calendar.extensions.hide
 import cn.tagux.calendar.extensions.show
-import cn.tagux.calendar.model.date.*
+import cn.tagux.calendar.model.date.ARTICLE
+import cn.tagux.calendar.model.date.AUDIO
+import cn.tagux.calendar.model.date.NORMAL
+import cn.tagux.calendar.model.date.PIC
+import cn.tagux.calendar.model.date.YData
 import cn.tagux.calendar.tools.doOnMainThreadIdle
 import cn.tagux.calendar.ui.detail.DetailActivity
 import coil.load
@@ -24,26 +28,23 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 class SentenceAdapter(val activity: Activity) :
     BaseMultiItemQuickAdapter<YData, BaseViewHolder>() {
 
-
     init {
         // 添加普通类型
         addItemType(NORMAL, R.layout.item_date_normal)
         // 音频类型
-        addItemType(AUDIO,R.layout.item_date_normal)
+        addItemType(AUDIO, R.layout.item_date_normal)
         // 文章类型
-        addItemType(ARTICLE,R.layout.item_date_article)
+        addItemType(ARTICLE, R.layout.item_date_article)
         // 图片类型
-        addItemType(PIC,R.layout.item_date_pic)
+        addItemType(PIC, R.layout.item_date_pic)
     }
-
 
     @SuppressLint("SetTextI18n")
     override fun convert(holder: BaseViewHolder, item: YData) {
 
+        when (holder.itemViewType) {
 
-        when(holder.itemViewType){
-
-            NORMAL ->{
+            NORMAL -> {
                 val itemBinding = ItemDateNormalBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
                 itemBinding.tvFrom.text = "「${item.content.personSim}」"
@@ -60,12 +61,12 @@ class SentenceAdapter(val activity: Activity) :
                         )
                         context.startActivity(intent, options.toBundle())
                     }
-                }else{
+                } else {
                     itemBinding.btnDetail.hide()
                 }
             }
 
-            AUDIO ->{
+            AUDIO -> {
                 val itemBinding = ItemDateNormalBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
                 itemBinding.tvFrom.text = "「${item.content.personSim}」"
@@ -82,23 +83,22 @@ class SentenceAdapter(val activity: Activity) :
                         )
                         context.startActivity(intent, options.toBundle())
                     }
-                }else{
+                } else {
                     itemBinding.btnDetail.hide()
                 }
             }
 
-            PIC ->{
+            PIC -> {
                 val itemBinding = ItemDatePicBinding.bind(holder.itemView)
                 itemBinding.tvFrom.text = item.content.title
                 doOnMainThreadIdle({
-                    itemBinding.ivPic.load(item.content.picture){
+                    itemBinding.ivPic.load(item.content.picture) {
                         transformations(RoundedCornersTransformation(6.dp.toFloat()))
                     }
                 })
-
             }
 
-            ARTICLE ->{
+            ARTICLE -> {
                 val itemBinding = ItemDateArticleBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
                 itemBinding.tvFrom.text = "「${item.content.personSim}」"
@@ -115,16 +115,10 @@ class SentenceAdapter(val activity: Activity) :
                         )
                         context.startActivity(intent, options.toBundle())
                     }
-                }else{
+                } else {
                     itemBinding.btnDetail.hide()
                 }
             }
-
-
         }
-
-
     }
-
-
 }

@@ -18,7 +18,6 @@ import android.view.ViewGroup
 @Suppress("unused")
 class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.AnimatorListener {
 
-
     private var background: Bitmap? = null // 背景截图
 
     private val paint = Paint()
@@ -39,7 +38,6 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
     //
     private var fraction = 100F
 
-
     // 动画结束的监听
     private var animationEndListener: () -> Unit = {}
 
@@ -47,9 +45,8 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-
     init {
-        rootView =  getActivityFromContext(context).window.decorView as ViewGroup
+        rootView = getActivityFromContext(context).window.decorView as ViewGroup
     }
 
     override fun onAnimationUpdate(anim: ValueAnimator) {
@@ -57,18 +54,15 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
         postInvalidate()
     }
 
-
     fun setDuration(duration: Long): CurtainView {
         this.duration = duration
         return this
     }
 
-
     fun addAnimEndListener(animationEndListener: () -> Unit): CurtainView {
         this.animationEndListener = animationEndListener
         return this
     }
-
 
     @Throws(Exception::class)
     private fun getActivityFromContext(mContext: Context): Activity {
@@ -82,10 +76,9 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
         throw Exception("Activity not found!")
     }
 
-
     fun start() {
         if (!isStart) {
-            Log.e("anim","kaisshi")
+            Log.e("anim", "kaisshi")
             isStart = true
             updateBackground()
             attachToRootView()
@@ -101,7 +94,6 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
         rootView?.addView(this)
     }
 
-
     /**
      * 从根视图中移除并释放资源
      */
@@ -113,7 +105,6 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
             }
         }
     }
-
 
     /**
      * 更新屏幕截图
@@ -129,7 +120,6 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
         background = rootView?.let { getBitmapFromView(it) }
     }
 
-
     /**
      * 由canvas更新背景截图
      */
@@ -144,7 +134,6 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
         return bitmap
     }
 
-
     // 获取动画对象
     private fun getAnimator(): ValueAnimator {
         val valueAnimator = ValueAnimator.ofFloat(0f, 100F)
@@ -154,7 +143,6 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
         return valueAnimator
     }
 
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return true
@@ -163,7 +151,7 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        Log.e("xuanran","-----")
+        Log.e("xuanran", "-----")
 
         val layer = canvas.saveLayer(
             0F,
@@ -180,7 +168,6 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
             paint
         )
         canvas.restoreToCount(layer)
-
     }
 
     // 动画开始
@@ -198,6 +185,4 @@ class CurtainView : View, ValueAnimator.AnimatorUpdateListener, Animator.Animato
 
     // 动画重复
     override fun onAnimationRepeat(anim: Animator) = Unit
-
-
 }

@@ -7,7 +7,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 
 class ConfigAdapter : BaseQuickAdapter<ConfigItem, BaseViewHolder>
-    (R.layout.item_config) {
+(R.layout.item_config) {
 
     override fun convert(holder: BaseViewHolder, item: ConfigItem) {
         val binding = ItemConfigBinding.bind(holder.itemView)

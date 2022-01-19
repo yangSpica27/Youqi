@@ -43,10 +43,6 @@ class UserRepository @Inject constructor(
         onComplete()
     }.flowOn(Dispatchers.IO)
 
-
     fun loginOut() {
-
     }
-
-
 }

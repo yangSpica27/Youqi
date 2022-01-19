@@ -16,7 +16,6 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.google.android.material.transition.platform.MaterialContainerTransform.FADE_MODE_THROUGH
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 
-
 /**
  * 详情页面
  */
@@ -32,7 +31,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>() {
             {
                 webView = WebViewPool.instance.getWebView(this)
                 viewBinding.root.addView(
-                    webView, ViewGroup.LayoutParams(
+                    webView,
+                    ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
                     )
@@ -40,7 +40,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>() {
                 webView.loadUrl(url)
             }, 500
         )
-
     }
 
     override fun onBackPressed() {
@@ -69,11 +68,5 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>() {
     }
 
     override fun setupViewBinding(inflater: LayoutInflater):
-            ActivityDetailBinding = ActivityDetailBinding.inflate(inflater)
-
-
-
-
-
-
+        ActivityDetailBinding = ActivityDetailBinding.inflate(inflater)
 }

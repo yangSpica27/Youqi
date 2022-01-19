@@ -16,19 +16,19 @@ import kotlinx.coroutines.launch
  */
 class CoilInitializer : Initializer<Unit> {
 
-  override fun create(context: Context) {
-    CoroutineScope(Dispatchers.Default).launch {
-      val imageLoader = ImageLoader.Builder(context)
-        .crossfade(true)
-        .allowRgb565(true)
-        .memoryCachePolicy(CachePolicy.ENABLED)
-        .diskCachePolicy(CachePolicy.ENABLED)
-        .allowHardware(true)
-        .bitmapPoolingEnabled(false)
-        .build()
-      Coil.setImageLoader(imageLoader)
+    override fun create(context: Context) {
+        CoroutineScope(Dispatchers.Default).launch {
+            val imageLoader = ImageLoader.Builder(context)
+                .crossfade(true)
+                .allowRgb565(true)
+                .memoryCachePolicy(CachePolicy.ENABLED)
+                .diskCachePolicy(CachePolicy.ENABLED)
+                .allowHardware(true)
+                .bitmapPoolingEnabled(false)
+                .build()
+            Coil.setImageLoader(imageLoader)
+        }
     }
-  }
 
-  override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

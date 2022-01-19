@@ -23,9 +23,7 @@ open class ContentEditText : AppCompatEditText {
         defStyleAttr
     )
 
-
     var listener: OnCommitContentListener? = null
-
 
     fun setCommitContentListener(listener: OnCommitContentListener) {
         this.listener = listener
@@ -46,7 +44,6 @@ open class ContentEditText : AppCompatEditText {
         MimeType.WEBP.toString(),
         MimeType.HEIC.toString()
     )
-
 
     override fun onCreateInputConnection(editorInfo: EditorInfo): InputConnection? {
         val ic = super.onCreateInputConnection(editorInfo)

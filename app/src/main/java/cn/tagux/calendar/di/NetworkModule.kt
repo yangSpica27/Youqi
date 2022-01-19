@@ -20,14 +20,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
-
 /**
  * 网络模块
  */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
 
     /**
      * 注入QQ登陆
@@ -36,11 +34,11 @@ object NetworkModule {
     @Singleton
     fun provideQQLogin(@ApplicationContext context: Context): Tencent {
 
-        return Tencent.createInstance("1106365828",
-            context)
-
+        return Tencent.createInstance(
+            "1106365828",
+            context
+        )
     }
-
 
     /**
      * 注入ohHttpClient
@@ -50,7 +48,7 @@ object NetworkModule {
     fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
 
         val cookieJar: ClearableCookieJar =
-          PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
+            PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
 
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor())
@@ -80,6 +78,4 @@ object NetworkModule {
     fun provideApiClient(apiService: ApiService): AppClient {
         return AppClient(apiService)
     }
-
-
 }

@@ -1,6 +1,5 @@
 package cn.tagux.calendar.model.date
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

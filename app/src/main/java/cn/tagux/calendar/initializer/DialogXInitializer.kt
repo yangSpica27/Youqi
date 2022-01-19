@@ -5,12 +5,11 @@ import android.content.Context
 import androidx.startup.Initializer
 import com.kongzue.dialogx.DialogX
 
-class DialogXInitializer :Initializer<Unit> {
+class DialogXInitializer : Initializer<Unit> {
 
-  override fun create(context: Context) {
-    DialogX.init(context);
-  }
+    override fun create(context: Context) {
+        DialogX.init(context)
+    }
 
-
-  override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

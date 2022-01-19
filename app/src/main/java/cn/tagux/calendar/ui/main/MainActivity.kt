@@ -24,7 +24,12 @@ import cn.tagux.calendar.extensions.dp
 import cn.tagux.calendar.extensions.hide
 import cn.tagux.calendar.extensions.show
 import cn.tagux.calendar.model.date.YData
-import cn.tagux.calendar.tools.*
+import cn.tagux.calendar.tools.SpicaColorEvaluator
+import cn.tagux.calendar.tools.ViewPagerLayoutManager
+import cn.tagux.calendar.tools.doOnMainThreadIdle
+import cn.tagux.calendar.tools.expand
+import cn.tagux.calendar.tools.getDate
+import cn.tagux.calendar.tools.gradientColor
 import cn.tagux.calendar.ui.comment.CommentActivity
 import cn.tagux.calendar.ui.setting.SettingActivity
 import coil.load
@@ -37,10 +42,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 import kotlin.math.pow
 import kotlin.math.sqrt
-
 
 /**
  * 主页面
@@ -48,10 +51,8 @@ import kotlin.math.sqrt
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>() {
 
-
     // 这个页面的viewModel
     private val viewModel by viewModels<MainViewModel>()
-
 
     private val items: MutableList<YData> = mutableListOf()
 
@@ -72,7 +73,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         .apply {
             duration = 500L
         }
-
 
     // 揭幕动画的圆心x坐标
     private var startX = 0F
@@ -101,7 +101,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
     private val sentenceAdapter: SentenceAdapter by lazy {
         SentenceAdapter(this)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // 设置容器动画回调
@@ -164,12 +163,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             }
         }
 
-
         // 开始网络请求
         lifecycleScope.launch {
             viewModel.dateList()
         }
-
 
         // 点击72候
         viewBinding.tv72.setOnClickListener {
@@ -181,10 +178,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
 
                 // 计算完成开始动画
                 picAnim()
-
             }
         }
-
 
         viewBinding.ivPic.setOnClickListener {
             if (revealAnim?.isRunning == true) {
@@ -195,25 +190,24 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             resumePicAnim()
         }
 
-        //透明状态栏
+        // 透明状态栏
         immersionBar {
             transparentStatusBar()
             statusBarDarkFont(true)
             transparentNavigationBar()
         }
 
-        //布局整体下沉适配状态栏
+        // 布局整体下沉适配状态栏
         val lp = viewBinding.tv72.layoutParams as ConstraintLayout.LayoutParams
         lp.updateMargins(
             top = lp.topMargin + statusBarHeight
         )
         viewBinding.tv72.layoutParams = lp
 
-
-        //设置默认背景
+        // 设置默认背景
         viewBinding.root.background = bg
 
-        //点击头像
+        // 点击头像
         viewBinding.ivAvatar.setOnClickListener {
             val intent = Intent(this, SettingActivity::class.java)
             startActivity(intent)
@@ -226,15 +220,14 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
                 Intent(this, CommentActivity::class.java)
                     .apply {
                         putExtra("cid", items[currentPosition].content.id)
-                    })
+                    }
+            )
         }
-
 
         // 点击回到今天
         viewBinding.tvBackToday.setOnClickListener {
             viewBinding.rvCard.smoothScrollToPosition(0)
         }
-
     }
 
     /**
@@ -245,7 +238,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             // 最大半径为0时触发计算
             startX = viewBinding.tv72.x
             startY = viewBinding.tv72.y
-            //将屏幕分成4个小矩形
+            // 将屏幕分成4个小矩形
             val leftTop = RectF(0F, 0F, startX + 0F, startY + 0F)
             val rightTop = RectF(
                 leftTop.right, 0F,
@@ -259,19 +252,18 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
                 leftBottom.right, leftTop.bottom,
                 viewBinding.root.right.toFloat(), leftBottom.bottom
             )
-            //分别获取对角线长度
+            // 分别获取对角线长度
             val leftTopHypotenuse = sqrt((leftTop.width().pow(2) + leftTop.height().pow(2)).toDouble())
             val rightTopHypotenuse = sqrt((rightTop.width().pow(2) + rightTop.height().pow(2)).toDouble())
             val leftBottomHypotenuse = sqrt((leftBottom.width().pow(2) + leftBottom.height().pow(2)).toDouble())
             val rightBottomHypotenuse = sqrt((rightBottom.width().pow(2) + rightBottom.height().pow(2)).toDouble())
 
-            //取最大值 为最大半径
+            // 取最大值 为最大半径
             maxRadius = leftTopHypotenuse.coerceAtLeast(rightTopHypotenuse)
                 .coerceAtLeast(leftBottomHypotenuse.coerceAtLeast(rightBottomHypotenuse))
                 .toInt()
         }
     }
-
 
     /**
      * 打开揭幕动画
@@ -301,7 +293,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             override fun onAnimationCancel(p0: Animator?) = Unit
 
             override fun onAnimationRepeat(p0: Animator?) = Unit
-
         })
 
         // 回到主线程执行
@@ -309,7 +300,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
             revealAnim?.start()
         }
     }
-
 
     /**
      * 关闭揭幕动画
@@ -360,7 +350,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         viewBinding.tvComment.text = items[currentPosition].content.commentCount.toString()
     }
 
-
     override fun onBackPressed() {
         if (viewBinding.ivPic.visibility == View.VISIBLE) {
             resumePicAnim()
@@ -369,75 +358,71 @@ class MainActivity : BindingActivity<ActivityMainBinding>() {
         super.onBackPressed()
     }
 
-
     private fun initRecyclerview() {
-        //监听以实现加变色转化动画
+        // 监听以实现加变色转化动画
         sentenceAdapter.setAnimationWithDefault(BaseQuickAdapter.AnimationType.ScaleIn)
         cardLayoutManager.setOnViewPagerListener(object :
-            ViewPagerLayoutManager.OnViewPagerListener {
+                ViewPagerLayoutManager.OnViewPagerListener {
 
-            override fun onInitComplete() = Unit
+                override fun onInitComplete() = Unit
 
-            // 卡牌切换的监听
-            override fun onPageSelected(position: Int, isBottom: Boolean) {
-                currentPosition = position
+                // 卡牌切换的监听
+                override fun onPageSelected(position: Int, isBottom: Boolean) {
+                    currentPosition = position
 
-                if (position == 0) {
-                    // 根据滑动位置显示和隐藏"回到今天"
-                    viewBinding.tvBackToday.hide()
-                } else {
-                    viewBinding.tvBackToday.show()
+                    if (position == 0) {
+                        // 根据滑动位置显示和隐藏"回到今天"
+                        viewBinding.tvBackToday.hide()
+                    } else {
+                        viewBinding.tvBackToday.show()
+                    }
+
+                    lifecycleScope.launch {
+                        initHeaderAndBottomBar()
+                    }
+
+                    // 停止当前动画
+                    if (colorAnim.isRunning) {
+                        colorAnim.cancel()
+                    }
+
+                    // 获取下个动画的颜色对象
+                    val nextColor = gradientColor[position]
+
+                    // 清除动画监听
+                    colorAnim.removeAllUpdateListeners()
+
+                    // 更新动画实现
+                    colorAnim.addUpdateListener {
+                        val colorTop = spicaColorEvaluator.evaluate(it.animatedValue as Float, currentColor[0], nextColor[0])
+                        val colorBottom = spicaColorEvaluator.evaluate(it.animatedValue as Float, currentColor[1], nextColor[1])
+
+                        currentColor[0] = colorTop as Int
+                        currentColor[1] = colorBottom as Int
+
+                        // 生成新的渐变色背景并且应用
+                        val bg = GradientDrawable(
+                            GradientDrawable.Orientation.TOP_BOTTOM,
+                            currentColor
+                        )
+
+                        viewBinding.root.background = bg
+                    }
+                    colorAnim.start()
                 }
 
-                lifecycleScope.launch {
-                    initHeaderAndBottomBar()
-                }
+                override fun onPageRelease(isNext: Boolean, position: Int) = Unit
+            })
 
-                //停止当前动画
-                if (colorAnim.isRunning) {
-                    colorAnim.cancel()
-                }
-
-                //获取下个动画的颜色对象
-                val nextColor = gradientColor[position]
-
-                //清除动画监听
-                colorAnim.removeAllUpdateListeners()
-
-                //更新动画实现
-                colorAnim.addUpdateListener {
-                    val colorTop = spicaColorEvaluator.evaluate(it.animatedValue as Float, currentColor[0], nextColor[0])
-                    val colorBottom = spicaColorEvaluator.evaluate(it.animatedValue as Float, currentColor[1], nextColor[1])
-
-                    currentColor[0] = colorTop as Int
-                    currentColor[1] = colorBottom as Int
-
-                    // 生成新的渐变色背景并且应用
-                    val bg = GradientDrawable(
-                        GradientDrawable.Orientation.TOP_BOTTOM,
-                        currentColor
-                    )
-
-                    viewBinding.root.background = bg
-
-                }
-                colorAnim.start()
-            }
-
-            override fun onPageRelease(isNext: Boolean, position: Int) = Unit
-
-        })
-
-        //布局管理器
+        // 布局管理器
         viewBinding.rvCard.layoutManager =
             cardLayoutManager
 
-        //卡片的适配器
+        // 卡片的适配器
         viewBinding.rvCard.adapter = sentenceAdapter
     }
 
     // 传入页面
     override fun setupViewBinding(inflater: LayoutInflater):
-            ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
-
+        ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
 }

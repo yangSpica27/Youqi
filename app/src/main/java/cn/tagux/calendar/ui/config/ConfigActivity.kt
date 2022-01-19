@@ -10,17 +10,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.fondesa.recyclerviewdivider.dividerBuilder
 import com.gyf.immersionbar.ktx.immersionBar
 
-
 /**
  * 配置页面
  */
 class ConfigActivity : BindingActivity<ActivityConfigBinding>() {
 
-
     private val adapter by lazy {
         ConfigAdapter()
     }
-
 
     override fun initializer() {
 
@@ -35,9 +32,7 @@ class ConfigActivity : BindingActivity<ActivityConfigBinding>() {
         doOnMainThreadIdle(
             { initRecyclerview() }
         )
-
     }
-
 
     private fun initRecyclerview() {
         adapter.addData(
@@ -59,12 +54,10 @@ class ConfigActivity : BindingActivity<ActivityConfigBinding>() {
 
         adapter.setOnItemClickListener { _, view, position ->
             kotlin.run {
-
             }
         }
     }
 
     override fun setupViewBinding(inflater: LayoutInflater): ActivityConfigBinding =
         ActivityConfigBinding.inflate(inflater)
-
 }

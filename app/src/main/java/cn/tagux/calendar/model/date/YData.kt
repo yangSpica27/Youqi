@@ -1,6 +1,5 @@
 package cn.tagux.calendar.model.date
 
-
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -27,17 +26,17 @@ data class YData(
     val wuhouPictureTra: String,
     @Json(name = "wuhou_tra")
     val wuhouTra: String,
-): MultiItemEntity{
+) : MultiItemEntity {
     override val itemType: Int
         get() {
-            if (content.isArticle==1){
+            if (content.isArticle == 1) {
                 return ARTICLE
             }
-            if (content.audio.isNotEmpty()){
+            if (content.audio.isNotEmpty()) {
                 return AUDIO
             }
 
-            if (content.picture.isNotEmpty()){
+            if (content.picture.isNotEmpty()) {
                 return PIC
             }
 

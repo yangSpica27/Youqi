@@ -39,8 +39,6 @@ class ReplyControllerView : LinearLayout {
             this
         )
 
-
-
         binding.chatEt
             .addTextChangedListener(
                 MarkwonEditorTextWatcher.withPreRender(
@@ -50,9 +48,8 @@ class ReplyControllerView : LinearLayout {
                 )
             )
 
-
         binding.chatEt.doOnTextChanged { text, _, _, _ ->
-           run {
+            run {
                 if (text.isNullOrEmpty()) {
                     binding.chatSend.hide()
                 } else {
@@ -60,14 +57,5 @@ class ReplyControllerView : LinearLayout {
                 }
             }
         }
-
-
     }
-
-
-
-
-
-
-
 }

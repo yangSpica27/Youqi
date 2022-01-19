@@ -15,29 +15,25 @@ class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-
     // 是否正在加载
     val isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     // 错误消息
     val errorMessage: MutableStateFlow<String?> = MutableStateFlow("")
 
-    private lateinit var loginFlow:Flow<Any>
+    private lateinit var loginFlow: Flow<Any>
 
     /**
      * 登陆
      */
-    fun loginIn(openid:String,accessToken:String){
-        loginFlow = userRepository.loginIn(openid,accessToken, onComplete = {},
-        onError = {}, onStart = {}, onSuccess = {}).stateIn(
-            scope = viewModelScope, //作用域
-            started = SharingStarted.WhileSubscribed(5000),//等待时间
-            initialValue = Any() //默认值
+    fun loginIn(openid: String, accessToken: String) {
+        loginFlow = userRepository.loginIn(
+            openid, accessToken, onComplete = {},
+            onError = {}, onStart = {}, onSuccess = {}
+        ).stateIn(
+            scope = viewModelScope, // 作用域
+            started = SharingStarted.WhileSubscribed(5000), // 等待时间
+            initialValue = Any() // 默认值
         )
     }
-
-
-
-
-
 }

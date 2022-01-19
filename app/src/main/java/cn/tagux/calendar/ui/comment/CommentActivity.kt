@@ -29,7 +29,6 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
         CommentAdapter()
     }
 
-
     private var commentId: Int = 0
 
     private val viewModel by viewModels<CommentViewModel>()
@@ -41,7 +40,7 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
 
         commentId = intent.getIntExtra("cid", 0)
 
-        //透明状态栏
+        // 透明状态栏
         immersionBar {
             transparentStatusBar()
             statusBarDarkFont(true)
@@ -55,7 +54,6 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
             }
         }
 
-
         // 绑定软键盘和对应view
         mHelper = PanelSwitchHelper.Builder(this)
             .addContentScrollMeasurer {
@@ -65,18 +63,15 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
             .contentScrollOutsideEnable(true)
             .build(false)
 
-
         // cpu空闲时再初始化重任务
         doOnMainThreadIdle({
             initRecyclerView()
         })
 
-
-
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.commentList.collectLatest {
                 if (it.isEmpty()) {
-                    //返回空数组表示到底 加载结束
+                    // 返回空数组表示到底 加载结束
                     commentAdapter.loadMoreModule.loadMoreEnd()
                     return@collectLatest
                 }
@@ -93,10 +88,8 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
             }
         }
 
-
         lifecycleScope.launch(Dispatchers.Main) {
             viewModel.isLoading.collectLatest {
-
             }
         }
 
@@ -105,9 +98,7 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
             // 开始网络请求
             viewModel.loadMoreComment(true)
         }
-
     }
-
 
     override fun onBackPressed() {
         // 用户按下返回键的时候，如果显示面板，则需要隐藏
@@ -116,7 +107,6 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
         }
         super.onBackPressed()
     }
-
 
     private fun initRecyclerView() {
         commentAdapter.setEmptyView(R.layout.layout_comment_empty)
@@ -141,9 +131,6 @@ class CommentActivity : BindingActivity<ActivityCommentBinding>() {
         }
     }
 
-
     override fun setupViewBinding(inflater: LayoutInflater):
-            ActivityCommentBinding = ActivityCommentBinding.inflate(inflater)
-
-
+        ActivityCommentBinding = ActivityCommentBinding.inflate(inflater)
 }

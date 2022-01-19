@@ -12,7 +12,6 @@ import java.util.regex.Pattern
 
 class MentionEditText : ContentEditText {
 
-
     private val MENTION_COLOR by lazy { Color.parseColor("#5FA7E4") }
 
     private val mentionNumberPattern: Pattern by lazy {

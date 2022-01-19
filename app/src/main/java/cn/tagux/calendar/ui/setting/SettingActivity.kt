@@ -22,7 +22,6 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper
 @AndroidEntryPoint
 class SettingActivity : BindingActivity<ActivitySettingBinding>() {
 
-
     private val adapter: CollectAdapter by lazy {
         CollectAdapter()
     }
@@ -56,10 +55,7 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>() {
 
         viewBinding.ivAvatar.setOnClickListener(clickHeader)
         viewBinding.tvUserName.setOnClickListener(clickHeader)
-
-
     }
-
 
     private fun initRecyclerview() {
         adapter.addData(mutableListOf("", "", "", ""))
@@ -76,13 +72,9 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>() {
         )
 
         viewBinding.rvCollect.adapter = adapter
-
     }
 
-
     override fun setupViewBinding(inflater: LayoutInflater):
-            ActivitySettingBinding =
+        ActivitySettingBinding =
         ActivitySettingBinding.inflate(inflater)
-
-
 }

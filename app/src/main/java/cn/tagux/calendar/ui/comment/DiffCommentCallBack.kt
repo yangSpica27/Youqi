@@ -12,5 +12,4 @@ class DiffCommentCallBack : DiffUtil.ItemCallback<CommentItem>() {
     override fun areContentsTheSame(oldItem: CommentItem, newItem: CommentItem): Boolean {
         return oldItem.content == newItem.content
     }
-
 }

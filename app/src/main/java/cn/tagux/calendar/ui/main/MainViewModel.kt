@@ -26,7 +26,6 @@ class MainViewModel
     // 错误消息
     val errorMessage: MutableStateFlow<String?> = MutableStateFlow("")
 
-
     private lateinit var _dateListFlow: StateFlow<YDateList?>
 
     val dateList: StateFlow<YDateList?>
@@ -46,13 +45,11 @@ class MainViewModel
                 errorMessage.value = it
             },
             onSuccess = {
-
             }
         ).stateIn(
-            scope = viewModelScope, //作用域
-            started = SharingStarted.WhileSubscribed(5000),//等待时间
-            initialValue = null //默认值
+            scope = viewModelScope, // 作用域
+            started = SharingStarted.WhileSubscribed(5000), // 等待时间
+            initialValue = null // 默认值
         )
     }
-
 }

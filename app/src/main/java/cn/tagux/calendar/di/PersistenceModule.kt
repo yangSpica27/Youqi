@@ -1,11 +1,10 @@
 package cn.tagux.calendar.di
 
-
 /**
  * 持久层模块
  */
-//@Module
-//@InstallIn(SingletonComponent::class)
+// @Module
+// @InstallIn(SingletonComponent::class)
 object PersistenceModule {
 
 //  @Provides
@@ -27,6 +26,4 @@ object PersistenceModule {
 //  @Provides
 //  @Singleton
 //  fun provideUserDao(appDatabase: AppDatabase) = appDatabase.UserDao()
-
-
 }

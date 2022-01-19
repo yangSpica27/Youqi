@@ -5,7 +5,12 @@ import androidx.lifecycle.viewModelScope
 import cn.tagux.calendar.model.comment.CommentItem
 import cn.tagux.calendar.repository.YRepostory
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -48,16 +53,14 @@ class CommentViewModel @Inject constructor(
                             errorMessage.value = it
                         }
                     ).stateIn(
-                        scope = viewModelScope, //作用域
-                        started = SharingStarted.WhileSubscribed(5000),//等待时间
-                        initialValue = listOf() //默认值
+                        scope = viewModelScope, // 作用域
+                        started = SharingStarted.WhileSubscribed(5000), // 等待时间
+                        initialValue = listOf() // 默认值
                     )
             }
 
-
     val commentList: Flow<List<CommentItem>>
         get() = _commentList
-
 
     /**
      * 加载主页的文章
@@ -69,5 +72,4 @@ class CommentViewModel @Inject constructor(
             currentPage.value++
         }
     }
-
 }

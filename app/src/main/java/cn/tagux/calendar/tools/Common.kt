@@ -2,7 +2,6 @@ package cn.tagux.calendar.tools
 
 import android.graphics.Color
 
-
 // 主页使用的渐变色集合
 val gradientColor by lazy {
     listOf(
@@ -13,7 +12,8 @@ val gradientColor by lazy {
         intArrayOf(
             Color.parseColor("#81C784"),
             Color.parseColor("#AED581")
-        ), intArrayOf(
+        ),
+        intArrayOf(
             Color.parseColor("#FFB74D"),
             Color.parseColor("#FFD54F")
         ),

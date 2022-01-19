@@ -21,7 +21,6 @@ class YRepostory
     private val appClient: AppClient
 ) {
 
-
     @WorkerThread
     fun dateList(
         onStart: () -> Unit,
@@ -49,7 +48,6 @@ class YRepostory
         onComplete()
     }.flowOn(Dispatchers.IO)
 
-
     fun getCommentList(
         contentId: Int,
         page: Int,
@@ -74,6 +72,4 @@ class YRepostory
     }.onCompletion {
         onComplete()
     }.flowOn(Dispatchers.IO)
-
-
 }
