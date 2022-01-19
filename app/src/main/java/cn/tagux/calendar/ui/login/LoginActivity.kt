@@ -64,11 +64,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>() {
                                 Toast.makeText(this@LoginActivity, "登陆取消", Toast.LENGTH_LONG).show()
                             }
 
-                            override fun onWarning(code: Int) {
-                                if (code == Constants.ERROR_NO_AUTHORITY){
-                                    Toast.makeText(this@LoginActivity,"onWarning: 请授权手Q访问分享的文件的读取权限!",Toast.LENGTH_SHORT).show()
-                                }
-                            }
+
                         })
                 }
             }
@@ -80,9 +76,12 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>() {
 
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(Manifest.permission.ACCESS_NETWORK_STATE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            arrayOf(
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.QUERY_ALL_PACKAGES,
+            ),
             1
         )
 
@@ -137,10 +136,6 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>() {
             }
 
             override fun onCancel() {
-                TODO("Not yet implemented")
-            }
-
-            override fun onWarning(p0: Int) {
                 TODO("Not yet implemented")
             }
 

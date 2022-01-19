@@ -57,6 +57,7 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>() {
         viewBinding.ivAvatar.setOnClickListener(clickHeader)
         viewBinding.tvUserName.setOnClickListener(clickHeader)
 
+
     }
 
 
@@ -75,6 +76,7 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>() {
         )
 
         viewBinding.rvCollect.adapter = adapter
+
     }
 
 

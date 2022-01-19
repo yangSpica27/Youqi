@@ -14,4 +14,6 @@
     <color name="textColorPrimaryHint">#787474</color>
     <color name="textColorPrimaryLight">#de6c6969</color>
     <color name="bg_default">#4DB6AC</color>
+
+    <color name="test">#D1C4E9</color>
 </resources>
