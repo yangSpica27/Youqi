@@ -44,10 +44,16 @@ class SentenceAdapter(val activity: Activity) :
 
         when (holder.itemViewType) {
 
+
             NORMAL -> {
                 val itemBinding = ItemDateNormalBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
-                itemBinding.tvFrom.text = "「${item.content.personSim}」"
+                if (item.content.personSim.isNotEmpty()){
+                    itemBinding.tvFrom.text = "「${item.content.personSim}」"
+                }else{
+                    itemBinding.tvFrom.text = ""
+                }
+
                 if (item.content.isArticle == 1) {
                     itemBinding.btnDetail.show()
                     itemBinding.cdContainer.setOnClickListener {
@@ -69,7 +75,12 @@ class SentenceAdapter(val activity: Activity) :
             AUDIO -> {
                 val itemBinding = ItemDateNormalBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
-                itemBinding.tvFrom.text = "「${item.content.personSim}」"
+                if (item.content.personSim.isNotEmpty()){
+                    itemBinding.tvFrom.text = "「${item.content.personSim}」"
+                }else{
+                    itemBinding.tvFrom.text = ""
+                }
+
                 if (item.content.isArticle == 1) {
                     itemBinding.btnDetail.show()
                     itemBinding.cdContainer.setOnClickListener {
@@ -101,7 +112,11 @@ class SentenceAdapter(val activity: Activity) :
             ARTICLE -> {
                 val itemBinding = ItemDateArticleBinding.bind(holder.itemView)
                 itemBinding.tvTitle.text = item.content.title
-                itemBinding.tvFrom.text = "「${item.content.personSim}」"
+                if (item.content.personSim.isNotEmpty()){
+                    itemBinding.tvFrom.text = "「${item.content.personSim}」"
+                }else{
+                    itemBinding.tvFrom.text = ""
+                }
                 if (item.content.isArticle == 1) {
                     itemBinding.btnDetail.show()
                     itemBinding.cdContainer.setOnClickListener {
